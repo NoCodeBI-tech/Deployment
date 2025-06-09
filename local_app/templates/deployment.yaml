@@ -1,0 +1,34 @@
+{{- range $service := .Values.services }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $.Values.global.appName }}-{{ $service.name }}-deployment
+  namespace: {{ $.Values.global.appName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $.Values.global.appName }}-{{ $service.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $.Values.global.appName }}-{{ $service.name }}
+    spec:
+      serviceAccountName: {{ $.Values.global.appName }}-sa
+      containers:
+        - name: {{ $service.name }}
+          image: "{{ $.Values.global.imageRegistry }}/{{ $service.image }}:{{$.Values.global.image.tag}}"
+          ports:
+            - name: port
+              containerPort: {{ $service.port }}
+          volumeMounts:
+            - name: tls-certs
+              mountPath: "/etc/tls"
+              readOnly: true
+      restartPolicy: Always
+      volumes:
+        - name: tls-certs
+          secret:
+            secretName: wildcard-tls-secret
+---
+{{- end }}

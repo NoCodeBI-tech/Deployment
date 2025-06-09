@@ -1,0 +1,121 @@
+global:
+  imageRegistry: "docker.io/nocodebi"
+  image:
+    tag: "latest"
+  ingress:
+    className: "traefik"
+    domain: nocodebi.io
+  appName: app_server
+
+services:
+  - name: appserver-admin
+    image: appserver-admin
+    port: 10002
+    path: /
+    subDomain: local-app
+    replicaCount: 1
+    autoscaling:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 5
+    enableVolume: false
+    volume:
+      size: 10Gi
+
+  - name: appserver-flow
+    image: appserver-flow
+    port: 10009
+    path: /flow
+    subDomain: local-app
+    replicaCount: 1
+    autoscaling:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 5
+    enableVolume: false
+    volume:
+      size: 10Gi
+
+  - name: appserver-configuration
+    image: appserver-configuration
+    port: 10007
+    path: /config
+    subDomain: app
+    replicaCount: 1
+    autoscaling:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 5
+    enableVolume: false
+    volume:
+      size: 10Gi
+
+  - name: appserver-connector
+    image: appserver-connector
+    port: 10003
+    path: /connector
+    subDomain: local-app
+    replicaCount: 1
+    autoscaling:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 5
+    enableVolume: false
+    volume:
+      size: 10Gi
+
+  - name: appserver-hosted-database
+    image: appserver-hosted-database
+    port: 10012
+    path: /hostedDB
+    subDomain: local-app
+    replicaCount: 1
+    autoscaling:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 5
+    enableVolume: false
+    volume:
+      size: 10Gi
+
+  - name: appserver-query
+    image: appserver-query
+    port: 10006
+    path: /query
+    subDomain: local-app
+    replicaCount: 1
+    autoscaling:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 5
+    enableVolume: false
+    volume:
+      size: 10Gi
+
+  - name: appserver-security-provider
+    image: appserver-security-provider
+    port: 10013
+    path: /security
+    subDomain: local-app
+    replicaCount: 1
+    autoscaling:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 5
+    enableVolume: false
+    volume:
+      size: 10Gi
+
+  - name: appserver-view
+    image: appserver-view
+    port: 10006
+    path: /view
+    subDomain: local-app
+    replicaCount: 1
+    autoscaling:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 5
+    enableVolume: false
+    volume:
+      size: 10Gi

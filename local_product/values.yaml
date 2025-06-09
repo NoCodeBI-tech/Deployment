@@ -1,0 +1,23 @@
+global:
+  imageRegistry: "docker.io/nocodebi"
+  image:
+    tag: "latest"
+  ingress:
+    className: "traefik"
+    domain: nocodebi.io
+  appName: prouduct_console_server
+
+services:
+  - name: server-product-console
+    image: server-product-console
+    port: 10001
+    path: /
+    subDomain: local-product
+    replicaCount: 1
+    autoscaling:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 5
+    enableVolume: false
+    volume:
+      size: 10Gi
