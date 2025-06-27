@@ -52,6 +52,7 @@ spec:
       - name: traefik
         image: traefik:v2.10
         args:
+        - "--api.dashboard=true"
         - "--api.insecure=true"
         - "--entrypoints.web.address=:80"
         - "--entrypoints.websecure.address=:443"
@@ -81,6 +82,7 @@ spec:
   - name: websecure
     port: 443
     targetPort: websecure
+
 # ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
