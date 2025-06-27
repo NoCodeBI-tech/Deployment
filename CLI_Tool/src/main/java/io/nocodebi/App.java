@@ -98,9 +98,9 @@ public class App
 
                     } else if ("install".equalsIgnoreCase(command)) {
 
-                        System.out.println(Installation.buildTraefik());
+                        Installation.buildTraefik();
 
-                        System.out.println(Installation.buildProductConsole());
+                        Installation.buildProductConsole();
 
                     } else if ("uninstall".equalsIgnoreCase(command)) {
 

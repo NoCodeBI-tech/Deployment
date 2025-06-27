@@ -151,6 +151,7 @@ public class Utilities {
             Path keyPath = tempDir.resolve(certName + ".key");
             Path crtPath = tempDir.resolve(certName + ".crt");
             Path pfxPath = tempDir.resolve(certName + ".pfx");
+            Path pemPath = tempDir.resolve(certName + ".pem");
 
             // 1. Generate RSA Key Pair
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
@@ -194,6 +195,15 @@ public class Utilities {
                 writer.writeObject(certificate);
             }
 
+            // 4.5. Export combined .pem (key + cert)
+            String tempPrivateKeyPem = Files.readString(keyPath);
+            String tempCertificatePem = Files.readString(crtPath);
+            try (BufferedWriter pemWriter = Files.newBufferedWriter(pemPath)) {
+                pemWriter.write(tempPrivateKeyPem);
+                pemWriter.newLine();
+                pemWriter.write(tempCertificatePem);
+            }
+
             // 5. Export to .pfx
             KeyStore pkcs12 = KeyStore.getInstance("PKCS12");
             pkcs12.load(null, null);
@@ -227,6 +237,9 @@ public class Utilities {
             String privateKeyPem = Files.readString(keyPath);
             String certificatePem = Files.readString(crtPath);
 
+            System.out.println("privateKeyPem >>> " + privateKeyPem);
+            System.out.println("certificatePem >>> " + certificatePem);
+
             // Remove BEGIN/END lines and whitespace
             String privateKeyBase64 = privateKeyPem
                     .replaceAll("-----BEGIN (.*)-----", "")
@@ -238,13 +251,19 @@ public class Utilities {
                     .replaceAll("-----END (.*)-----", "")
                     .replaceAll("\\s", ""); // remove all whitespace (newlines)
 
+            String pemBase64 = Base64.getEncoder().encodeToString(
+                    (privateKeyPem + "\n" + certificatePem).getBytes()
+            );
+
             // Output
             System.out.println("🔑 Private Key (Base64 only):\n" + privateKeyBase64);
             System.out.println("📜 Certificate (Base64 only):\n" + certificateBase64);
+            System.out.println("📦 Combined PEM (Base64):\n" + pemBase64);
 
             Map<String, String> output = new HashMap<>();
             output.put("crt", certificateBase64);
             output.put("key", privateKeyBase64);
+            output.put("pem", pemBase64);
 
             return output;
 

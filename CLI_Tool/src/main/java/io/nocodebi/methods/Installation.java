@@ -16,53 +16,86 @@ public class Installation {
 
     public static String buildProductConsole() {
 
-        Map< String, String > certificate = Utilities.setup_Wild_Card_Certificate();
+        String output = null;
 
-        List<String> command = new ArrayList<>();
+        try {
 
-        command.add(Constant.HELM);
+            Map<String, String> certificate = Utilities.setup_Wild_Card_Certificate();
 
-        command.add(Constant.UPGRADE);
+            List<String> command = new ArrayList<>();
 
-        command.add(Constant._INSTALL);
+            command.add(Constant.HELM);
 
-        command.add(Constant.PRODUCT_CONSOLE_NAME);
+            command.add(Constant.UPGRADE);
 
-        command.add(Constant.PRODUCT_CONSOLE_URL);
+            command.add(Constant._INSTALL);
 
-        command.add(Constant._NAMESPACE + Constant.PRODUCT_CONSOLE_NAME);
+            command.add(Constant.PRODUCT_CONSOLE_NAME);
 
-        command.add(Constant._CREATE_NAMESPACE);
+            command.add(Constant.PRODUCT_CONSOLE_URL);
 
-        command.add(Constant._SET);
+            command.add(Constant._NAMESPACE + Constant.PRODUCT_CONSOLE_NAME);
 
-        command.add(Constant.GLOBAL_APPNAME + Constant.PRODUCT_CONSOLE_NAME + Constant.COMMA);
+            command.add(Constant._CREATE_NAMESPACE);
 
-        command.add(Constant.GLOBAL_TLS_CRT + certificate.get("crt").toString() + Constant.COMMA);
+            command.add(Constant._SET);
 
-        command.add(Constant.GLOBAL_TLS_KEY + certificate.get("key").toString());
+            command.add(Constant.GLOBAL_APPNAME +
+                    Constant.PRODUCT_CONSOLE_NAME +
+                    Constant.COMMA +
+                    Constant.GLOBAL_TLS_CRT +
+                    certificate.get("crt").toString() +
+                    Constant.COMMA +
+                    Constant.GLOBAL_TLS_KEY +
+                    certificate.get("key").toString());
 
-        System.out.println("Command : " + String.join(" ", command));
+            System.out.println("buildProductConsole >>> Command : " + String.join(" ", command));
 
-        return runProcess(command).toString();
+            output = runProcess(command).toString();
+
+            System.out.println("buildProductConsole >>> " + output);
+
+            return output;
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+
+            return output;
+        }
 
     }
 
     public static String buildTraefik() {
 
-        List<String> command = new ArrayList<>();
+        String output = null;
 
-        command.add(Constant.KUBECTL);
+        try {
 
-        command.add(Constant.APPLY);
+            List<String> command = new ArrayList<>();
 
-        command.add(Constant._FILE);
+            command.add(Constant.KUBECTL);
 
-        command.add(Constant.TRAEFIK_URL);
+            command.add(Constant.APPLY);
 
-        System.out.println("Command : " + String.join(" ", command));
+            command.add(Constant._FILE);
 
-        return runProcess(command).toString();
+            command.add(Constant.TRAEFIK_URL);
+
+            System.out.println("buildTraefik >>> Command : " + String.join(" ", command));
+
+            output = runProcess(command).toString();
+
+            System.out.println("buildTraefik >>> " + output);
+
+            return output;
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+
+            return output;
+        }
 
     }
 
