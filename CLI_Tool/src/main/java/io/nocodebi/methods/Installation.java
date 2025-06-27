@@ -2,6 +2,7 @@ package io.nocodebi.methods;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.nocodebi.constant.Constant;
+import io.nocodebi.utils.Utilities;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -14,6 +15,8 @@ import java.util.stream.Collectors;
 public class Installation {
 
     public static String buildProductConsole() {
+
+        Map< String, String > certificate = Utilities.setup_Wild_Card_Certificate();
 
         List<String> command = new ArrayList<>();
 
@@ -33,7 +36,11 @@ public class Installation {
 
         command.add(Constant._SET);
 
-        command.add(Constant.GLOBAL_APPNAME + Constant.PRODUCT_CONSOLE_NAME);
+        command.add(Constant.GLOBAL_APPNAME + Constant.PRODUCT_CONSOLE_NAME + Constant.COMMA);
+
+        command.add(Constant.GLOBAL_TLS_CRT + certificate.get("crt").toString() + Constant.COMMA);
+
+        command.add(Constant.GLOBAL_TLS_KEY + certificate.get("key").toString());
 
         System.out.println("Command : " + String.join(" ", command));
 

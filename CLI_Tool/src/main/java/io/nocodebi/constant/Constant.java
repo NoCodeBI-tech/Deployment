@@ -43,6 +43,8 @@ public class Constant {
     public static final String GRAP = "| grep";
     public static final String DOUBLEAND = "&&";
     public static final String GLOBAL_APPNAME = "global.appName=";
+    public static final String GLOBAL_TLS_CRT = "global.tls.crt=";
+    public static final String GLOBAL_TLS_KEY = "global.tls.key=";
     public static final String GLOBAL_IMAGE_TAG_LATEST = "global.image.tag=latest";
     public static final String GLOBAL_IMAGE_TAG = "global.image.tag=";
     public static final String SEMICOLON = ";";

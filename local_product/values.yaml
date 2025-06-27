@@ -6,15 +6,16 @@ global:
     className: "traefik"
     domain: nocodebi.io
   appName: productconsole
+  tls:
+    crt: ""
+    key: ""
 
 services:
 - name: server-product-console
   image: server-product-console
   env:
-  - name: CENTRAL_SERVER_URL
-    value: "https://central.nocodebi.io/"
-  - name: PRODUCT_CONSOLE_SERVER_URL
-    value: "https://local-product.nocodebi.io/"
+    CENTRAL_SERVER_URL: "https://central.nocodebi.io/"
+    PRODUCT_CONSOLE_SERVER_URL: "https://local-product.nocodebi.io/"
   port: 10001
   path: /
   subDomain: local-product
