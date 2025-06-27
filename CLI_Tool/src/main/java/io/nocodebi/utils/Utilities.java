@@ -230,16 +230,19 @@ public class Utilities {
             System.out.println("privateKeyPem >>> " + keyPem);
             System.out.println("certificatePem >>> " + crtPem);
 
-            // Remove BEGIN/END lines and whitespace
-            String keyBase64 = keyPem
-                    .replaceAll("-----BEGIN (.*)-----", "")
-                    .replaceAll("-----END (.*)-----", "")
-                    .replaceAll("\\s", ""); // remove all whitespace (newlines)
+            String keyBase64 = Base64.getEncoder().encodeToString(keyPem.getBytes(StandardCharsets.UTF_8));
+            String crtBase64 = Base64.getEncoder().encodeToString(crtPem.getBytes(StandardCharsets.UTF_8));
 
-            String crtBase64 = crtPem
-                    .replaceAll("-----BEGIN (.*)-----", "")
-                    .replaceAll("-----END (.*)-----", "")
-                    .replaceAll("\\s", ""); // remove all whitespace (newlines)
+            // Remove BEGIN/END lines and whitespace
+//            String keyBase64 = keyPem
+//                    .replaceAll("-----BEGIN (.*)-----", "")
+//                    .replaceAll("-----END (.*)-----", "")
+//                    .replaceAll("\\s", ""); // remove all whitespace (newlines)
+//
+//            String crtBase64 = crtPem
+//                    .replaceAll("-----BEGIN (.*)-----", "")
+//                    .replaceAll("-----END (.*)-----", "")
+//                    .replaceAll("\\s", ""); // remove all whitespace (newlines)
 
             // Output
             System.out.println("🔑 Private Key (Base64 only):\n" + keyBase64);
