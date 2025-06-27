@@ -68,11 +68,25 @@ public class Installation {
 
     public static String buildTraefik() {
 
-        String output = null;
+        StringBuilder output = null;
 
         try {
 
             List<String> command = new ArrayList<>();
+
+            output = new StringBuilder();
+
+            command.add(Constant.KUBECTL);
+
+            command.add(Constant.APPLY);
+
+            command.add(Constant._FILE);
+
+            command.add(Constant.TRAEFIK_CRD_CMD);
+
+            output.append(runProcess(command).get(Constant.RESULT).toString());
+
+            command = new ArrayList<>();
 
             command.add(Constant.KUBECTL);
 
@@ -84,17 +98,17 @@ public class Installation {
 
             System.out.println("buildTraefik >>> Command : " + String.join(" ", command));
 
-            output = runProcess(command).toString();
+            output.append(runProcess(command).get(Constant.RESULT).toString());
 
             System.out.println("buildTraefik >>> " + output);
 
-            return output;
+            return output.toString();
 
         }catch (Exception e){
 
             e.printStackTrace();
 
-            return output;
+            return output == null ? null : output.toString();
         }
 
     }
@@ -121,6 +135,20 @@ public class Installation {
 
         List<String> command = new ArrayList<>();
 
+        StringBuilder output = new StringBuilder();
+
+        command.add(Constant.KUBECTL);
+
+        command.add(Constant.APPLY);
+
+        command.add(Constant._FILE);
+
+        command.add(Constant.TRAEFIK_CRD_UNINSTALL_CMD);
+
+        output.append(runProcess(command).get(Constant.RESULT).toString());
+
+        command = new ArrayList<>();
+
         command.add(Constant.KUBECTL);
 
         command.add(Constant.DELETE);
@@ -131,7 +159,13 @@ public class Installation {
 
         System.out.println("Command : " + String.join(" ", command));
 
-        return runProcess(command).toString();
+        output.append(runProcess(command).get(Constant.RESULT).toString());
+
+        output.append(runProcess(List.of(Constant.TRAEFIK_CRD_UNINSTALL_CMD)).get(Constant.RESULT).toString());
+
+        System.out.println("uninstallTraefik >>> " + output);
+
+        return output.toString();
 
     }
 

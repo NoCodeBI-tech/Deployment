@@ -53,6 +53,8 @@ public class Constant {
     public static final String APP_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/local_app.tgz";
     public static final String PRODUCT_CONSOLE_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/local_product.tgz";
     public static final String TRAEFIK_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/traefik/traefik.yml";
+    public static final String TRAEFIK_CRD_CMD = "https://raw.githubusercontent.com/traefik/traefik/v2.10/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml";
+    public static final String TRAEFIK_CRD_UNINSTALL_CMD = "https://raw.githubusercontent.com/traefik/traefik/v2.10/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml";
 
     // Name
     public static final String PRODUCT_CONSOLE_NAME= "productconsole";
