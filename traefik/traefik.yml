@@ -56,6 +56,7 @@ spec:
         - "--api.insecure=true"
         - "--entrypoints.web.address=:80"
         - "--entrypoints.websecure.address=:443"
+        - "--entrypoints.traefik.address=:8080"
         - "--providers.kubernetesingress=true"
         - "--providers.kubernetescrd=true"
         ports:
@@ -82,6 +83,9 @@ spec:
   - name: websecure
     port: 443
     targetPort: websecure
+  - name: admin
+    port: 8080
+    targetPort: admin
 
 # ---
 # apiVersion: networking.k8s.io/v1
