@@ -33,6 +33,7 @@ public class Constant {
     public static final String UPGRADE = "upgrade";
     public static final String NAMESPACE = "namespace";
     public static final String _NAMESPACE = "--namespace=";
+    public static final String _N = "-n";
     public static final String _CREATE_NAMESPACE = "--create-namespace";
     public static final String _SET = "--set";
     public static final String COMMA = ",";
@@ -44,10 +45,14 @@ public class Constant {
     public static final String GLOBAL_APPNAME = "global.appName=";
     public static final String GLOBAL_IMAGE_TAG_LATEST = "global.image.tag=latest";
     public static final String GLOBAL_IMAGE_TAG = "global.image.tag=";
+    public static final String SEMICOLON = ";";
 
-    //Content Urls
+    // Content Urls
     public static final String APP_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/local_app.tgz";
     public static final String PRODUCT_CONSOLE_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/local_product.tgz";
     public static final String TRAEFIK_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/traefik/traefik.yml";
+
+    // Name
+    public static final String PRODUCT_CONSOLE_NAME= "productconsole";
 
 }

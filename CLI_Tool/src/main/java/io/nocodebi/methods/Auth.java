@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import java.net.http.HttpResponse;
 import java.util.Scanner;
 
-public class Methods {
+public class Auth {
 
     public static void login(CookieStoreManager cookieStoreManager) throws Exception {
 

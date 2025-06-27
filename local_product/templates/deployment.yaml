@@ -18,6 +18,11 @@ spec:
       containers:
         - name: {{ $service.name }}
           image: "{{ $.Values.global.imageRegistry }}/{{ $service.image }}:{{$.Values.global.image.tag}}"
+          env:
+          {{- range $key, $value := $service.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+          {{- end }}
           ports:
             - name: port
               containerPort: {{ $service.port }}

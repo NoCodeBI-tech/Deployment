@@ -5,19 +5,24 @@ global:
   ingress:
     className: "traefik"
     domain: nocodebi.io
-  appName: prouduct_console_server
+  appName: productconsole
 
 services:
-  - name: server-product-console
-    image: server-product-console
-    port: 10001
-    path: /
-    subDomain: local-product
-    replicaCount: 1
-    autoscaling:
-      enabled: true
-      minReplicas: 1
-      maxReplicas: 5
-    enableVolume: false
-    volume:
-      size: 10Gi
+- name: server-product-console
+  image: server-product-console
+  env:
+  - name: CENTRAL_SERVER_URL
+    value: "https://central.nocodebi.io/"
+  - name: PRODUCT_CONSOLE_SERVER_URL
+    value: "https://local-product.nocodebi.io/"
+  port: 10001
+  path: /
+  subDomain: local-product
+  replicaCount: 1
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 5
+  enableVolume: false
+  volume:
+    size: 10Gi
