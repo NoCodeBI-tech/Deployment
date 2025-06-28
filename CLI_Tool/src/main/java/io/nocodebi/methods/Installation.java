@@ -49,11 +49,11 @@ public class Installation {
                     Constant.GLOBAL_TLS_KEY +
                     certificate.get("key").toString());
 
-            System.out.println("buildProductConsole >>> Command : " + String.join(" ", command));
+//            System.out.println("buildProductConsole >>> Command : " + String.join(" ", command));
 
             output = runProcess(command).toString();
 
-            System.out.println("buildProductConsole >>> " + output);
+//            System.out.println("buildProductConsole >>> " + output);
 
             return output;
 
@@ -96,11 +96,11 @@ public class Installation {
 
             command.add(Constant.TRAEFIK_URL);
 
-            System.out.println("buildTraefik >>> Command : " + String.join(" ", command));
+//            System.out.println("buildTraefik >>> Command : " + String.join(" ", command));
 
             output.append(runProcess(command).get(Constant.RESULT).toString());
 
-            System.out.println("buildTraefik >>> " + output);
+//            System.out.println("buildTraefik >>> " + output);
 
             return output.toString();
 

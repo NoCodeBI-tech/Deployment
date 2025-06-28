@@ -211,14 +211,19 @@ public class Utilities {
 
             // 7. Add hosts file entry
             String hostsEntry = "127.0.0.1 local-product.nocodebi.io";
-            Path hostsPath = Paths.get(System.getenv("SystemRoot") + "\\System32\\drivers\\etc\\hosts");
+            Path hostsPath = getHostFilePath();
             List<String> hostsLines = Files.readAllLines(hostsPath);
 
             if (!hostsLines.contains(hostsEntry)) {
+
                 Files.write(hostsPath, Collections.singletonList(hostsEntry), StandardOpenOption.APPEND);
-                System.out.println("🌐 Added hosts entry: " + hostsEntry);
+
+//                System.out.println("🌐 Added hosts entry: " + hostsEntry);
+
             } else {
-                System.out.println("ℹ️ Hosts entry already exists.");
+
+//                System.out.println("ℹ️ Hosts entry already exists.");
+
             }
 
             System.out.println("🎉 All done! You can now access: https://local-product.nocodebi.io");
@@ -227,13 +232,13 @@ public class Utilities {
             String keyPem = Files.readString(keyPath);
             String crtPem = Files.readString(crtPath);
 
-            System.out.println("privateKeyPem >>> " + keyPem);
-            System.out.println("certificatePem >>> " + crtPem);
+//            System.out.println("privateKeyPem >>> " + keyPem);
+//            System.out.println("certificatePem >>> " + crtPem);
 
             String keyBase64 = Base64.getEncoder().encodeToString(keyPem.getBytes(StandardCharsets.UTF_8));
             String crtBase64 = Base64.getEncoder().encodeToString(crtPem.getBytes(StandardCharsets.UTF_8));
 
-            // Remove BEGIN/END lines and whitespace
+//            // Remove BEGIN/END lines and whitespace
 //            String keyBase64 = keyPem
 //                    .replaceAll("-----BEGIN (.*)-----", "")
 //                    .replaceAll("-----END (.*)-----", "")
@@ -244,9 +249,9 @@ public class Utilities {
 //                    .replaceAll("-----END (.*)-----", "")
 //                    .replaceAll("\\s", ""); // remove all whitespace (newlines)
 
-            // Output
-            System.out.println("🔑 Private Key (Base64 only):\n" + keyBase64);
-            System.out.println("📜 Certificate (Base64 only):\n" + crtBase64);
+////          Output
+//            System.out.println("🔑 Private Key (Base64 only):\n" + keyBase64);
+//            System.out.println("📜 Certificate (Base64 only):\n" + crtBase64);
 
             Map<String, String> output = new HashMap<>();
             output.put("crt", crtBase64);

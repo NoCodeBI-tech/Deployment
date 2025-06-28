@@ -104,9 +104,9 @@ public class App
 
                     } else if ("uninstall".equalsIgnoreCase(command)) {
 
-                        System.out.println(Installation.uninstallTraefik());
+                        Installation.uninstallTraefik();
 
-                        System.out.println(Installation.uninstallProductConsole());
+                        Installation.uninstallProductConsole();
 
                     } else if ("test".equalsIgnoreCase(command)) {
 
