@@ -1,16 +1,17 @@
-{{/*{{- range $service := .Values.services }}*/}}
-{{/*{{- if $service.enableVolume }}*/}}
-{{/*apiVersion: v1*/}}
-{{/*kind: PersistentVolumeClaim*/}}
-{{/*metadata:*/}}
-{{/*  name: {{ $service.name }}-pvc*/}}
-{{/*spec:*/}}
-{{/*  accessModes:*/}}
-{{/*    - ReadWriteOnce*/}}
-{{/*  resources:*/}}
-{{/*    requests:*/}}
-{{/*      storage: {{ $service.volume.size }}*/}}
-{{/*  storageClassName: manual*/}}
-{{/*---*/}}
-{{/*{{- end }}*/}}
-{{/*{{- end }}*/}}
+{{- range $service := .Values.services }}
+{{- if $service.enableVolume }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $.Values.global.appName }}-{{ $service.name }}-pvc
+  namespace: {{ $.Values.global.appName }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ $service.volume.size }}
+  storageClassName: manual
+---
+{{- end }}
+{{- end }}

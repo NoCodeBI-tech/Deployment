@@ -1,18 +1,23 @@
-{{/*{{- range $service := .Values.services }}*/}}
-{{/*{{- if $service.enableVolume }}*/}}
-{{/*apiVersion: v1*/}}
-{{/*kind: PersistentVolume*/}}
-{{/*metadata:*/}}
-{{/*  name: {{ $service.name }}-pv*/}}
-{{/*spec:*/}}
-{{/*  capacity:*/}}
-{{/*    storage: {{ $service.volume.size }}*/}}
-{{/*  accessModes:*/}}
-{{/*    - ReadWriteOnce*/}}
-{{/*  persistentVolumeReclaimPolicy: Retain*/}}
-{{/*  storageClassName: manual*/}}
-{{/*  hostPath:*/}}
-{{/*    path: "/data/{{ $service.name }}"*/}}
-{{/*---*/}}
-{{/*{{- end }}*/}}
-{{/*{{- end }}*/}}
+{{- range $service := .Values.services }}
+{{- if $service.enableVolume }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ $.Values.global.appName }}-{{ $service.name }}-pv
+spec:
+  capacity:
+    storage: {{ $service.volume.size }}
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: manual
+  hostPath:
+    path: {{ $.Values.global.userHome }}/{{ $.Values.global.appName }}/{{ $service.name }}
+---
+{{- end }}
+{{- end }}
+
+# `C:\Users\admin\data`
+# `/c/Users/admin/data`
+# `D:\projects\k8s\volume`
+# `/d/projects/k8s/volume

@@ -30,10 +30,19 @@ spec:
             - name: tls-certs
               mountPath: "/etc/tls"
               readOnly: true
+            {{- if $service.enableVolume }}
+            - name: data-volume
+              mountPath: "/app/data"
+            {{- end }}
       restartPolicy: Always
       volumes:
         - name: tls-certs
           secret:
             secretName: wildcard-tls-secret
+        {{- if $service.enableVolume }}
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: {{ $.Values.global.appName }}-{{ $service.name }}-pvc
+        {{- end }}
 ---
 {{- end }}

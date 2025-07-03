@@ -139,13 +139,15 @@ public class Installation {
 
         command.add(Constant.KUBECTL);
 
-        command.add(Constant.APPLY);
+        command.add(Constant.DELETE);
 
         command.add(Constant._FILE);
 
-        command.add(Constant.TRAEFIK_CRD_UNINSTALL_CMD);
+        command.add(Constant.TRAEFIK_CRD_CMD);
 
         output.append(runProcess(command).get(Constant.RESULT).toString());
+
+        output.append("\n");
 
         command = new ArrayList<>();
 
@@ -161,9 +163,7 @@ public class Installation {
 
         output.append(runProcess(command).get(Constant.RESULT).toString());
 
-        output.append(runProcess(List.of(Constant.TRAEFIK_CRD_UNINSTALL_CMD)).get(Constant.RESULT).toString());
-
-        System.out.println("uninstallTraefik >>> " + output);
+        System.out.println("uninstall Traefik >>> " + output);
 
         return output.toString();
 

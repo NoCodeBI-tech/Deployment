@@ -11,7 +11,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-  - host: {{ $service.subDomain}}.{{ $.Values.global.ingress.domain }}
+  - host: {{ $service.subDomain}}-{{ $.Values.global.appName }}.{{ $.Values.global.ingress.domain }}
     http:
       paths:
         - path: {{ $service.path }}

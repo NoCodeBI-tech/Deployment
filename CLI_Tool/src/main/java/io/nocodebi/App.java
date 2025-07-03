@@ -1,9 +1,8 @@
 package io.nocodebi;
 
 import io.nocodebi.constant.Constant;
-import io.nocodebi.methods.Auth;
 import io.nocodebi.cookieManager.CookieStoreManager;
-import io.nocodebi.methods.Installation;
+import io.nocodebi.methods.Auth;
 import io.nocodebi.service.DeviceFingerprintService;
 import io.nocodebi.utils.JwtUtil;
 import io.nocodebi.utils.Utilities;
@@ -16,6 +15,8 @@ import java.util.Scanner;
 public class App
 {
 
+    public static String accessToken = "";
+
     public static void main(String[] args) throws Exception {
 
         String cmd = null;
@@ -23,10 +24,6 @@ public class App
         String command = null;
 
         try {
-
-            // TODO : Testing Code will be delete
-
-            // Testing Start
 
             while(true) {
 
@@ -37,8 +34,6 @@ public class App
                 String line = sc.nextLine();
 
                 args = line.split("\\s+");
-
-                // Testing End
 
                 cmd = Arrays.toString(args);
 
@@ -58,7 +53,7 @@ public class App
 
                     CookieStoreManager cookieStoreManager = new CookieStoreManager();
 
-                    if ("login".equalsIgnoreCase(command)) {
+                    if ("login".equalsIgnoreCase(command)) {;
 
                         Auth.login(cookieStoreManager);
 
@@ -80,7 +75,9 @@ public class App
 
                     } else {
 
-                        if (!jwtUtil.validateToken(token.get(Constant.ACCESSTOKEN))) {
+                        accessToken = token.get(Constant.ACCESSTOKEN);
+
+                        if (!jwtUtil.validateToken(accessToken)) {
 
                             cookieStoreManager.clearCookies(true);
 
@@ -98,21 +95,31 @@ public class App
 
                     } else if ("install".equalsIgnoreCase(command)) {
 
-                        Installation.buildTraefik();
+                        String responseObj = Utilities.apiCall(cookieStoreManager,
+                                Constant.SERVICE,
+                                Constant.API_INSTALL_PRODUCT,
+                                Constant.EMPTY_JSON).body();
 
-                        Installation.buildProductConsole();
+                        String result = (String) Utilities.toResponseObj(responseObj).getData();
+
+                        System.out.println("Installation Status : " + result);
 
                     } else if ("uninstall".equalsIgnoreCase(command)) {
 
-                        Installation.uninstallTraefik();
+                        String responseObj = Utilities.apiCall(cookieStoreManager,
+                                Constant.SERVICE,
+                                Constant.API_UNINSTALL_PRODUCT,
+                                Constant.EMPTY_JSON).body();
 
-                        Installation.uninstallProductConsole();
+                        String result = (String) Utilities.toResponseObj(responseObj).getData();
+
+                        System.out.println("Uninstallation Status : " + result);
 
                     } else if ("test".equalsIgnoreCase(command)) {
 
                         System.out.println("SHA Key >>> " + DeviceFingerprintService.generateDeviceFingerprint());
 
-                        HttpResponse<String> response = Utilities.apiCall(cookieStoreManager, Constant.PRODUCT_CONSOLE, Constant.test, "{}");
+                        HttpResponse<String> response = Utilities.apiCall(cookieStoreManager, Constant.PRODUCT_CONSOLE, Constant.TEST, "{}");
 
                         System.out.println("Test >>> " + Utilities.toJson(response.body()));
 

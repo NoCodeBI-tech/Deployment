@@ -1,14 +1,13 @@
-package io.nocodebi.utils;
+package com.nocodebi.service.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import io.nocodebi.App;
-import io.nocodebi.constant.Constant;
-import io.nocodebi.cookieManager.CookieStoreManager;
-import io.nocodebi.model.Response;
+import com.nocodebi.service.constant.Constant;
+import com.nocodebi.service.cookieManager.CookieStoreManager;
+import jakarta.servlet.http.HttpServletRequest;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.GeneralName;
@@ -112,7 +111,6 @@ public class Utilities {
             request = HttpRequest.newBuilder()
                     .uri(URI.create(loginUrl))
                     .header("Content-Type", "application/json")
-                    .header(Constant.ACCESSTOKEN, App.accessToken)
                     .header("Cookie", cookieHeader)
                     .POST(HttpRequest.BodyPublishers.ofString(body, StandardCharsets.UTF_8))
                     .build();
@@ -218,11 +216,13 @@ public class Utilities {
 
 //                System.out.println("🌐 Added hosts entry: " + hostsEntry);
 
-            } else {
+            }
+
+//            else {
 
 //                System.out.println("ℹ️ Hosts entry already exists.");
 
-            }
+//            }
 
             System.out.println("🎉 All done! You can now access: https://local-product.nocodebi.io");
 
@@ -236,24 +236,11 @@ public class Utilities {
             String keyBase64 = Base64.getEncoder().encodeToString(keyPem.getBytes(StandardCharsets.UTF_8));
             String crtBase64 = Base64.getEncoder().encodeToString(crtPem.getBytes(StandardCharsets.UTF_8));
 
-//            // Remove BEGIN/END lines and whitespace
-//            String keyBase64 = keyPem
-//                    .replaceAll("-----BEGIN (.*)-----", "")
-//                    .replaceAll("-----END (.*)-----", "")
-//                    .replaceAll("\\s", ""); // remove all whitespace (newlines)
-//
-//            String crtBase64 = crtPem
-//                    .replaceAll("-----BEGIN (.*)-----", "")
-//                    .replaceAll("-----END (.*)-----", "")
-//                    .replaceAll("\\s", ""); // remove all whitespace (newlines)
-
-////          Output
-//            System.out.println("🔑 Private Key (Base64 only):\n" + keyBase64);
-//            System.out.println("📜 Certificate (Base64 only):\n" + crtBase64);
-
             Map<String, String> output = new HashMap<>();
             output.put("crt", crtBase64);
             output.put("key", keyBase64);
+
+            Utilities.saveDataInWindows(Constant.CERTIFICATE_PATH, output);
 
             return output;
 
@@ -348,11 +335,75 @@ public class Utilities {
 
     }
 
+    public static boolean saveDataInWindows(String path, Object obj) {
+        try {
+
+            Path filePath = Paths.get(System.getProperty(Constant.USER_HOME), path);
+
+            // ✅ Ensure parent directory exists
+            if (filePath.getParent() != null && !Files.exists(filePath.getParent())) {
+                Files.createDirectories(filePath.getParent());  // Use createDirectories, not createDirectory
+            }
+
+            // ✅ Try-with-resources to auto-close stream
+            try (ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(filePath))) {
+                oos.writeObject(obj);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static Object readDataFromWindows(String path) {
+        Path filePath = Paths.get(System.getProperty(Constant.USER_HOME), path);
+
+        try (ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(filePath))) {
+            return ois.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void addHostEntry(String IP, String URL){
 
         try {
 
             String hostsEntry = IP + " " + URL;
+
+            Path hostsPath = getHostFilePath();
+
+            if (!Files.readAllLines(hostsPath).contains(hostsEntry)) {
+
+                Files.write(hostsPath, Collections.singletonList(hostsEntry), StandardOpenOption.APPEND);
+
+                System.out.println("🌐 Added hosts entry: " + hostsEntry);
+
+            } else {
+
+                System.out.println("ℹ️ Hosts entry already exists.");
+
+            }
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+    public static void addHostEntryWithAppName(String appName){
+
+        try {
+
+            String hostsEntry = Constant.LOCALHOST + " " + String.format(Constant.UNFORMATTED_DOMAIN, appName);
 
             Path hostsPath = getHostFilePath();
 
@@ -382,42 +433,29 @@ public class Utilities {
 
     }
 
-    public static Response toResponseObj(String data){
+    public static boolean validateRequest(HttpServletRequest request){
 
-        return fromJson(data, Response.class);
+        JwtUtil jwtUtil = null;
 
-    }
+        try{
 
-    public static boolean saveDataInWindows(String path, Object obj){
+            jwtUtil = new JwtUtil();
 
-        try {
+            return jwtUtil.validateToken(request.getHeader(Constant.ACCESSTOKEN));
 
-            Path filePath = Path.of(path);
-
-            Files.createDirectories(filePath.getParent());
-
-            try (ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(filePath))) {
-
-                oos.writeObject(obj);
-
-                return true;
-
-            }catch (Exception e){
-
-                e.printStackTrace();
-
-                return false;
-
-            }
-
-        }catch (Exception e){
+        } catch (Exception e){
 
             e.printStackTrace();
 
             return false;
 
+        } finally {
+
+            jwtUtil = null;
+
         }
 
     }
+
 
 }

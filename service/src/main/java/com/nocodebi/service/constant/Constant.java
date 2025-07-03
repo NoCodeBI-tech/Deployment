@@ -1,17 +1,13 @@
-package io.nocodebi.constant;
-
+package com.nocodebi.service.constant;
 public class Constant {
 
     public static final String USER_HOME = "user.home";
     public static final String SESSION_PATH = "\\.nocodebi\\session.json";
+    public static final String CERTIFICATE_PATH = "\\.nocodebi\\cert.json";
     public static final String PRODUCT_CONSOLE = "https://product.nocodebi.io";
     public static final String SERVICE = "http://localhost:9876";
     public static final String LOGIN = "/data/login/handleEmailPasswordAuth";
-    public static final String TEST = "/data/profile/getSessionList";
-
-    public static final String API_INSTALL_PRODUCT = "/api/installProduct";
-    public static final String API_UNINSTALL_PRODUCT = "/api/uninstallProduct";
-
+    public static final String test = "/data/profile/getSessionList";
     public static final String ACCESSTOKEN = "accessToken";
     public static final String REFRESHTOKEN = "refreshToken";
 
@@ -68,6 +64,13 @@ public class Constant {
     public static final String SUCCESS = "SUCCESS";
     public static final String ERROR = "ERROR";
     public static final String EXCEPTION = "EXCEPTION";
-    public static final String EMPTY_JSON = "{}";
+    public static final String EMPTY = "{}";
+    public static final String UNAUTHORISED = "UNAUTHORISED";
+    public static final String INSTALLATION_FAILED = "INSTALLATION FAILED";
+    public static final String CRT = "crt";
+    public static final String KEY = "key";
+    public static final String LOCALHOST = "127.0.0.1";
+    public static final String DOMAIN = ".nocodebi.io";
+    public static final String UNFORMATTED_DOMAIN = "local-%s.nocodebi.io";
 
 }
