@@ -418,6 +418,25 @@ public class Utilities {
         return readyCount + "/" + total;
     }
 
+    public static String getLinuxStyleDataPath() {
+        String userHome = System.getProperty("user.home");
+        String osName = System.getProperty("os.name").toLowerCase();
+
+        String path = userHome;
+
+        // Convert Windows-style paths (e.g., C:\\Users\\user\\data) to Linux-style (e.g., /c/Users/user/data)
+        if (osName.contains("win")) {
+            path = path.replace("\\", "/"); // Normalize slashes
+            if (path.length() > 2 && path.charAt(1) == ':') {
+                // Convert C:/Users/... to /c/Users/...
+                char driveLetter = Character.toLowerCase(path.charAt(0));
+                path = "/" + driveLetter + path.substring(2);
+            }
+        }
+
+        return path;
+    }
+
     public static void addHostEntryWithAppName(String appName) {
 
         try {

@@ -48,6 +48,7 @@ public class Constant {
     public static final String GLOBAL_APPNAME = "global.appName=";
     public static final String GLOBAL_TLS_CRT = "global.tls.crt=";
     public static final String GLOBAL_TLS_KEY = "global.tls.key=";
+    public static final String GLOBAL_USER_HOME = "global.userHome=";
     public static final String GLOBAL_ENV_APP_CHART_URL = "global.env.CHART_REPO_URL=";
     public static final String GLOBAL_ENV_STAGE_ID = "global.env.STAGE_ID=";
     public static final String GLOBAL_ENV_APP_ID = "global.env.APP_ID=";

@@ -256,6 +256,7 @@ public class Installation {
                     Constant.GLOBAL_APPNAME + Constant.PRODUCT_CONSOLE_NAME +
                             Constant.COMMA + Constant.GLOBAL_TLS_CRT + certificate.get(Constant.CRT) +
                             Constant.COMMA + Constant.GLOBAL_TLS_KEY + certificate.get(Constant.KEY) +
+                            Constant.COMMA + Constant.GLOBAL_USER_HOME + Utilities.getLinuxStyleDataPath() +
                             Constant.COMMA + Constant.GLOBAL_ENV_APP_CHART_URL + Constant.APP_URL
             ));
 
@@ -338,6 +339,7 @@ public class Installation {
                     Constant.GLOBAL_APPNAME + context.getAppName() +
                             Constant.COMMA + Constant.GLOBAL_TLS_CRT + certificate.get(Constant.CRT) +
                             Constant.COMMA + Constant.GLOBAL_TLS_KEY + certificate.get(Constant.KEY) +
+                            Constant.COMMA + Constant.GLOBAL_USER_HOME + Utilities.getLinuxStyleDataPath() +
                             Constant.COMMA + Constant.GLOBAL_ENV_STAGE_ID + context.getStageId() +
                             Constant.COMMA + Constant.GLOBAL_ENV_APP_ID + context.getAppId() +
                             Constant.COMMA + Constant.GLOBAL_ENV_VERSION_ID + context.getVersionId() +

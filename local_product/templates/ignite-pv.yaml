@@ -12,7 +12,8 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
   hostPath:
-    path: {{ $.Values.global.userHome }}/{{ $.Values.global.appName }}/{{ $service.name }}
+    path: {{ $.Values.global.userHome }}/data/{{ $.Values.global.appName }}/{{ $service.name }}
+    type: DirectoryOrCreate
 ---
 {{- end }}
 {{- end }}
