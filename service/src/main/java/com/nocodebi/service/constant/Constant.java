@@ -1,4 +1,5 @@
 package com.nocodebi.service.constant;
+
 public class Constant {
 
     public static final String USER_HOME = "user.home";
@@ -21,6 +22,7 @@ public class Constant {
     public static final String APPLY = "apply";
     public static final String _FILE = "-f";
     public static final String SCALE = "scale";
+    public static final String GET_JSON = "-o json";
     public static final String DEPLOYMENT = "deployment";
     public static final String DASH = "-";
     public static final String RESULT = "result";
@@ -46,25 +48,34 @@ public class Constant {
     public static final String GLOBAL_APPNAME = "global.appName=";
     public static final String GLOBAL_TLS_CRT = "global.tls.crt=";
     public static final String GLOBAL_TLS_KEY = "global.tls.key=";
+    public static final String GLOBAL_ENV_APP_CHART_URL = "global.env.CHART_REPO_URL=";
+    public static final String GLOBAL_ENV_STAGE_ID = "global.env.STAGE_ID=";
+    public static final String GLOBAL_ENV_APP_ID = "global.env.APP_ID=";
+    public static final String GLOBAL_ENV_VERSION_ID = "global.env.VERSION_ID=";
+    public static final String GLOBAL_ENV_USER_ID = "global.env.USER_ID=";
+    public static final String GLOBAL_ENV_CENTRAL_SERVER_URL = "global.env.CENTRAL_SERVER_URL=";
+    public static final String GLOBAL_ENV_PRODUCT_CONSOLE_SERVER_URL = "global.env.PRODUCT_CONSOLE_SERVER_URL=";
+    public static final String GLOBAL_ENV_APP_SERVER_URL = "global.env.APP_SERVER_URL=";
+    public static final String GLOBAL_ENV_PREMISES_SHA = "global.env.PREMISES_SHA=";
+    public static final String GLOBAL_ENV_CORE_JAR_URL = "global.env.CORE_JAR_URL=";
+    public static final String GLOBAL_ENV_M2_ZIP_URL = "global.env.M2_ZIP_URL=";
+    public static final String GLOBAL_ENV_APP_DATA_PATH = "global.env.APP_DATA_PATH=";
     public static final String GLOBAL_IMAGE_TAG_LATEST = "global.image.tag=latest";
     public static final String GLOBAL_IMAGE_TAG = "global.image.tag=";
     public static final String SEMICOLON = ";";
-
     // Content Urls
     public static final String APP_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/local_app.tgz";
     public static final String PRODUCT_CONSOLE_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/local_product.tgz";
     public static final String TRAEFIK_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/traefik/traefik.yml";
     public static final String TRAEFIK_CRD_CMD = "https://raw.githubusercontent.com/traefik/traefik/v2.10/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml";
-
     // Name
-    public static final String PRODUCT_CONSOLE_NAME= "productconsole";
-
-    // status
-
+    public static final String PRODUCT_CONSOLE_NAME = "productconsole";
     public static final String SUCCESS = "SUCCESS";
     public static final String ERROR = "ERROR";
     public static final String EXCEPTION = "EXCEPTION";
     public static final String EMPTY = "{}";
+
+    // status
     public static final String UNAUTHORISED = "UNAUTHORISED";
     public static final String INSTALLATION_FAILED = "INSTALLATION FAILED";
     public static final String CRT = "crt";
@@ -72,5 +83,9 @@ public class Constant {
     public static final String LOCALHOST = "127.0.0.1";
     public static final String DOMAIN = ".nocodebi.io";
     public static final String UNFORMATTED_DOMAIN = "local-%s.nocodebi.io";
+    public static String OBJECT_RETRIEVE_SUCCESSFULLY = "OBJECT_RETRIEVE_SUCCESSFULLY";
+    public static String OBJECT_CREATED_SUCCESSFULLY = "OBJECT_CREATED_SUCCESSFULLY";
+    public static String OBJECT_UPDATED_SUCCESSFULLY = "OBJECT_UPDATED_SUCCESSFULLY";
+    public static String OBJECT_DELETED_SUCCESSFULLY = "OBJECT_DELETED_SUCCESSFULLY";
 
 }

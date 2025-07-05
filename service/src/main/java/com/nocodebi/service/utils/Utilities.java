@@ -7,7 +7,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.nocodebi.service.constant.Constant;
 import com.nocodebi.service.cookieManager.CookieStoreManager;
+import io.fabric8.kubernetes.api.model.Pod;
 import jakarta.servlet.http.HttpServletRequest;
+import okhttp3.OkHttpClient;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.GeneralName;
@@ -19,6 +21,9 @@ import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.*;
 import java.math.BigInteger;
 import java.net.URI;
@@ -33,6 +38,8 @@ import java.nio.file.StandardOpenOption;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 
 public class Utilities {
@@ -119,7 +126,7 @@ public class Utilities {
 
             return response;
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
 
@@ -129,7 +136,7 @@ public class Utilities {
 
     }
 
-    public static Map<String, String> setup_Wild_Card_Certificate(){
+    public static Map<String, String> setup_Wild_Card_Certificate() {
 
         try {
 
@@ -244,7 +251,7 @@ public class Utilities {
 
             return output;
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
 
@@ -371,7 +378,7 @@ public class Utilities {
         }
     }
 
-    public static void addHostEntry(String IP, String URL){
+    public static void addHostEntry(String IP, String URL) {
 
         try {
 
@@ -391,7 +398,7 @@ public class Utilities {
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
 
@@ -399,7 +406,19 @@ public class Utilities {
 
     }
 
-    public static void addHostEntryWithAppName(String appName){
+    public static String calculatePodAge(Instant startTime) {
+        Duration duration = Duration.between(startTime, Instant.now());
+        long days = duration.toDays();
+        return days + "d";
+    }
+
+    public static String formatReady(Pod pod) {
+        long readyCount = pod.getStatus().getContainerStatuses().stream().filter(cs -> cs.getReady()).count();
+        int total = pod.getStatus().getContainerStatuses().size();
+        return readyCount + "/" + total;
+    }
+
+    public static void addHostEntryWithAppName(String appName) {
 
         try {
 
@@ -419,7 +438,7 @@ public class Utilities {
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
 
@@ -427,23 +446,23 @@ public class Utilities {
 
     }
 
-    public static Path getHostFilePath(){
+    public static Path getHostFilePath() {
 
         return Paths.get(System.getenv("SystemRoot") + "\\System32\\drivers\\etc\\hosts");
 
     }
 
-    public static boolean validateRequest(HttpServletRequest request){
+    public static boolean validateRequest(HttpServletRequest request) {
 
         JwtUtil jwtUtil = null;
 
-        try{
+        try {
 
             jwtUtil = new JwtUtil();
 
             return jwtUtil.validateToken(request.getHeader(Constant.ACCESSTOKEN));
 
-        } catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
 
@@ -457,5 +476,50 @@ public class Utilities {
 
     }
 
+    public static OkHttpClient buildUnsafeHttpClient() {
+        try {
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        public void checkClientTrusted(X509Certificate[] chain, String authType) {
+                        }
+
+                        public void checkServerTrusted(X509Certificate[] chain, String authType) {
+                        }
+
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return new X509Certificate[0];
+                        }
+                    }
+            };
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustAllCerts, new SecureRandom());
+
+            return new OkHttpClient.Builder()
+                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustAllCerts[0])
+                    .hostnameVerifier((hostname, session) -> true)
+                    .build();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create unsafe HTTP client", e);
+        }
+    }
+
+    public static String getServerValue(String key) {
+
+        return switch (key) {
+            case "ADMIN_SERVER", "SERVER_ADMIN" -> "appserver-admin";
+            case "CONNECTOR_SERVER", "SERVER_CONNECTOR" -> "appserver-connector";
+            case "CONSOLIDATION_SERVER", "SERVER_CONSOLIDATION" -> "appserver-consolidation";
+            case "SEARCH_SERVER", "SERVER_SEARCH" -> "appserver-search";
+            case "VIEW_SERVER", "SERVER_VIEW" -> "appserver-view";
+            case "CONFIGURATION_SERVER", "SERVER_CONFIGURATION" -> "appserver-configuration";
+            case "WORKFLOW_SERVER", "SERVER_WORKFLOW" -> "appserver-workflow";
+            case "FLOW_SERVER", "SERVER_FLOW" -> "appserver-flow";
+            case "SECURITY_PROVIDER_SERVER", "SERVER_SECURITY_PROVIDER" -> "appserver-security-provider";
+            default -> null;
+        };
+
+    }
 
 }

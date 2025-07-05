@@ -5,7 +5,6 @@ metadata:
   name: {{ $.Values.global.appName }}-{{ $service.name }}-deployment
   namespace: {{ $.Values.global.appName }}
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: {{ $.Values.global.appName }}-{{ $service.name }}
@@ -19,7 +18,7 @@ spec:
         - name: {{ $service.name }}
           image: "{{ $.Values.global.imageRegistry }}/{{ $service.image }}:{{$.Values.global.image.tag}}"
           env:
-          {{- range $key, $value := $service.env }}
+          {{- range $key, $value := $.Values.global.env }}
             - name: {{ $key }}
               value: "{{ $value }}"
           {{- end }}

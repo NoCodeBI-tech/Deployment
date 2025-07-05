@@ -7,6 +7,10 @@ global:
     domain: nocodebi.io
   appName: productconsole
   userHome: ""
+  env:
+    CENTRAL_SERVER_URL: "https://central.nocodebi.io/"
+    PRODUCT_CONSOLE_SERVER_URL: "https://local-product.nocodebi.io/"
+    CHART_REPO_URL: ""
   tls:
     crt: ""
     key: ""
@@ -17,9 +21,6 @@ global:
 services:
 - name: server-product-console
   image: server-product-console
-  env:
-    CENTRAL_SERVER_URL: "https://central.nocodebi.io/"
-    PRODUCT_CONSOLE_SERVER_URL: "https://local-product.nocodebi.io/"
   port: 10001
   path: /
   subDomain: local-product
