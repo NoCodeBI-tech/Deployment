@@ -108,6 +108,10 @@ public class CommandController {
 
         AppContext context = Utilities.fromJson(request, AppContext.class);
 
+        System.out.println("request : " + request);
+
+        System.out.println("context : " + Utilities.toJson(context));
+
         Response response = null;
 
         if (!Utilities.validateRequest(httpServletRequest)) {
@@ -129,7 +133,7 @@ public class CommandController {
                         Constant.OBJECT_CREATED_SUCCESSFULLY,
                         transaction);
 
-                Installation.waitForPodsRunning(context.getAppName(), null, 120);
+//                Installation.waitForPodsRunning(context.getStageName() + context.getAppName(), null, 120);
 
             } else {
 
@@ -215,7 +219,9 @@ public class CommandController {
 
             if (context != null) {
 
-                List<ContainerUsage> usages = Installation.getPodMetrics(context.getAppName(), null);
+                List<ContainerUsage> usages = Installation.getPodMetrics(
+                        context.getStageName() + context.getAppName(),
+                        null);
 
                 response = new Response(Constant.SUCCESS,
                         usages,
@@ -240,8 +246,8 @@ public class CommandController {
     @PostMapping("/getBuildStatus")
 
     public ResponseEntity<Response> getBuildStatus(@RequestBody JsonNode request,
-                                                   HttpServletRequest httpServletRequest) {
 
+                                                   HttpServletRequest httpServletRequest) {
 
         ResponseTransaction transaction = new ResponseTransaction();
 
@@ -261,7 +267,7 @@ public class CommandController {
 
             if (context != null) {
 
-                List<PodSummary> summary = Installation.getPodStatusAsJson(context.getAppName(), null);
+                List<PodSummary> summary = Installation.getPodStatusAsJson(context.getStageName() + context.getAppName(), null);
 
                 response = new Response(Constant.SUCCESS,
                         summary,
@@ -314,11 +320,11 @@ public class CommandController {
 
                 if (action.equalsIgnoreCase("start")) {
 
-                    status = Installation.scaleDeployment(context.getAppName(), instanceName, 1);
+                    status = Installation.scaleDeployment(context.getStageName() + context.getAppName(), instanceName, 1);
 
                 } else if (action.equalsIgnoreCase("stop")) {
 
-                    status = Installation.scaleDeployment(context.getAppName(), instanceName, 0);
+                    status = Installation.scaleDeployment(context.getStageName() + context.getAppName(), instanceName, 0);
 
                 }
 
@@ -371,7 +377,7 @@ public class CommandController {
 
                 if (action.equalsIgnoreCase("start")) {
 
-                    status = Installation.scaleDeployment(context.getAppName(),
+                    status = Installation.scaleDeployment(context.getStageName() + context.getAppName(),
                             null,
                             1);
 
@@ -382,7 +388,7 @@ public class CommandController {
 
                 } else if (action.equalsIgnoreCase("stop")) {
 
-                    status = Installation.scaleDeployment(context.getAppName(),
+                    status = Installation.scaleDeployment(context.getStageName() + context.getAppName(),
                             null,
                             0);
 

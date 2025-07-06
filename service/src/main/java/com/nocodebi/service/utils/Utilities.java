@@ -437,11 +437,11 @@ public class Utilities {
         return path;
     }
 
-    public static void addHostEntryWithAppName(String appName) {
+    public static String addHostEntryWithAppName(String stageName, String appName) {
 
         try {
 
-            String hostsEntry = Constant.LOCALHOST + " " + String.format(Constant.UNFORMATTED_DOMAIN, appName);
+            String hostsEntry = Constant.LOCALHOST + " " + String.format(Constant.UNFORMATTED_DOMAIN, stageName, appName);
 
             Path hostsPath = getHostFilePath();
 
@@ -457,9 +457,13 @@ public class Utilities {
 
             }
 
+            return String.format(Constant.UNFORMATTED_HTTPS_DOMAIN, stageName, appName);
+
         } catch (Exception e) {
 
             e.printStackTrace();
+
+            return null;
 
         }
 
@@ -479,7 +483,7 @@ public class Utilities {
 
             jwtUtil = new JwtUtil();
 
-            return jwtUtil.validateToken(request.getHeader(Constant.ACCESSTOKEN));
+            return jwtUtil.validateToken(request.getHeader(Constant.AUTHORIZATION));
 
         } catch (Exception e) {
 

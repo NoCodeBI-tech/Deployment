@@ -325,18 +325,22 @@ public class Installation {
                 return null;
             }
 
-            Utilities.addHostEntryWithAppName(context.getAppName());
+            String appUrl = Utilities.addHostEntryWithAppName(
+                    context.getStageName(),
+                    context.getAppName());
+
+            context.setAppURL(appUrl);
 
             List<String> command = new ArrayList<>(List.of(
                     Constant.HELM,
                     Constant.UPGRADE,
                     Constant._INSTALL,
-                    context.getAppName(),
+                    context.getStageName() + context.getAppName(),
                     context.getChartURL(),
-                    Constant._NAMESPACE + context.getAppName(),
+                    Constant._NAMESPACE + context.getStageName() + context.getAppName(),
                     Constant._CREATE_NAMESPACE,
                     Constant._SET,
-                    Constant.GLOBAL_APPNAME + context.getAppName() +
+                    Constant.GLOBAL_APPNAME + context.getStageName() + context.getAppName() +
                             Constant.COMMA + Constant.GLOBAL_TLS_CRT + certificate.get(Constant.CRT) +
                             Constant.COMMA + Constant.GLOBAL_TLS_KEY + certificate.get(Constant.KEY) +
                             Constant.COMMA + Constant.GLOBAL_USER_HOME + Utilities.getLinuxStyleDataPath() +
@@ -376,7 +380,7 @@ public class Installation {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error building application [" + context.getAppName() + "]: " + e.getMessage());
+            System.out.println("Error building application [" + context.getStageName() + context.getAppName() + "]: " + e.getMessage());
             return null;
         }
     }
@@ -386,8 +390,8 @@ public class Installation {
             List<String> command = List.of(
                     Constant.HELM,
                     Constant.UNINSTALL,
-                    context.getAppName(),
-                    Constant._NAMESPACE + context.getAppName()
+                    context.getStageName() + context.getAppName(),
+                    Constant._NAMESPACE + context.getStageName() + context.getAppName()
             );
 
             // Debug: Uncomment if needed
@@ -395,11 +399,11 @@ public class Installation {
 
             CommandResult result = runProcess(command);
 
-            if (result.isSuccess() && result.getStdout().contains(String.format("release \"%s\" uninstalled", context.getAppName()))) {
+            if (result.isSuccess() && result.getStdout().contains(String.format("release \"%s\" uninstalled", context.getStageName() + context.getAppName()))) {
 
                 context.setPremiseSHA("");
 
-                deleteNamespaceIfEmpty(context.getAppName());
+                deleteNamespaceIfEmpty(context.getStageName() + context.getAppName());
 
                 return context;
 
@@ -413,7 +417,7 @@ public class Installation {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error uninstalling application [" + context.getAppName() + "]: " + e.getMessage());
+            System.out.println("Error uninstalling application [" + context.getStageName() + context.getAppName() + "]: " + e.getMessage());
             return null;
         }
     }
@@ -432,11 +436,15 @@ public class Installation {
         }
     }
 
-    public static List<PodSummary> getPodStatusAsJson(String namespace, String podName) {
+    public static List<PodSummary> getPodStatusAsJson(String namespace,
+                                                      String podName) {
+
         ObjectMapper mapper = new ObjectMapper();
+
         List<PodSummary> result = new ArrayList<>();
 
         try (KubernetesClient client = new KubernetesClientBuilder().build()) {
+
             List<Pod> pods;
 
             if (podName == null || podName.isBlank()) {
@@ -747,6 +755,5 @@ public class Installation {
             return false;
         }
     }
-
 
 }

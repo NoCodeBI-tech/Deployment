@@ -112,7 +112,7 @@ public class Utilities {
             request = HttpRequest.newBuilder()
                     .uri(URI.create(loginUrl))
                     .header("Content-Type", "application/json")
-                    .header(Constant.ACCESSTOKEN, App.accessToken)
+                    .header(Constant.AUTHORIZATION, App.accessToken)
                     .header("Cookie", cookieHeader)
                     .POST(HttpRequest.BodyPublishers.ofString(body, StandardCharsets.UTF_8))
                     .build();
@@ -121,7 +121,7 @@ public class Utilities {
 
             return response;
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
 
@@ -131,7 +131,7 @@ public class Utilities {
 
     }
 
-    public static Map<String, String> setup_Wild_Card_Certificate(){
+    public static Map<String, String> setup_Wild_Card_Certificate() {
 
         try {
 
@@ -257,7 +257,7 @@ public class Utilities {
 
             return output;
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
 
@@ -348,7 +348,7 @@ public class Utilities {
 
     }
 
-    public static void addHostEntry(String IP, String URL){
+    public static void addHostEntry(String IP, String URL) {
 
         try {
 
@@ -368,7 +368,7 @@ public class Utilities {
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
 
@@ -376,19 +376,19 @@ public class Utilities {
 
     }
 
-    public static Path getHostFilePath(){
+    public static Path getHostFilePath() {
 
         return Paths.get(System.getenv("SystemRoot") + "\\System32\\drivers\\etc\\hosts");
 
     }
 
-    public static Response toResponseObj(String data){
+    public static Response toResponseObj(String data) {
 
         return fromJson(data, Response.class);
 
     }
 
-    public static boolean saveDataInWindows(String path, Object obj){
+    public static boolean saveDataInWindows(String path, Object obj) {
 
         try {
 
@@ -402,7 +402,7 @@ public class Utilities {
 
                 return true;
 
-            }catch (Exception e){
+            } catch (Exception e) {
 
                 e.printStackTrace();
 
@@ -410,7 +410,7 @@ public class Utilities {
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
 

@@ -10,6 +10,8 @@ public class AppContext {
 
     private String appId;
 
+    private String stageName;
+
     private String appName;
 
     private String versionId;
@@ -41,6 +43,7 @@ public class AppContext {
 
         this.stageId = "";
         this.appId = "";
+        this.stageName = "";
         this.appName = "";
         this.versionId = "";
         this.userId = "";
@@ -78,6 +81,14 @@ public class AppContext {
 
         this.appId = appId;
 
+    }
+
+    public String getStageName() {
+        return stageName;
+    }
+
+    public void setStageName(String stageName) {
+        this.stageName = stageName;
     }
 
     public String getAppName() {

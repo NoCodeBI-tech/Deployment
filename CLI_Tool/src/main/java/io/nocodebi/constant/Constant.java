@@ -5,13 +5,14 @@ public class Constant {
     public static final String USER_HOME = "user.home";
     public static final String SESSION_PATH = "\\.nocodebi\\session.json";
     public static final String PRODUCT_CONSOLE = "https://product.nocodebi.io";
-    public static final String SERVICE = "http://localhost:9876";
+    public static final String SERVICE = "http://localhost:9876/";
     public static final String LOGIN = "/data/login/handleEmailPasswordAuth";
     public static final String TEST = "/data/profile/getSessionList";
 
-    public static final String API_INSTALL_PRODUCT = "/api/installProduct";
-    public static final String API_UNINSTALL_PRODUCT = "/api/uninstallProduct";
+    public static final String API_INSTALL_PRODUCT = "api/installProductConsole";
+    public static final String API_UNINSTALL_PRODUCT = "api/deleteProductConsole";
 
+    public static final String AUTHORIZATION = "Authorization";
     public static final String ACCESSTOKEN = "accessToken";
     public static final String REFRESHTOKEN = "refreshToken";
 
@@ -61,7 +62,7 @@ public class Constant {
     public static final String TRAEFIK_CRD_CMD = "https://raw.githubusercontent.com/traefik/traefik/v2.10/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml";
 
     // Name
-    public static final String PRODUCT_CONSOLE_NAME= "productconsole";
+    public static final String PRODUCT_CONSOLE_NAME = "productconsole";
 
     // status
 

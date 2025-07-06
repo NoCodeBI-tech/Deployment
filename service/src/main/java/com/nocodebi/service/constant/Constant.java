@@ -9,6 +9,7 @@ public class Constant {
     public static final String SERVICE = "http://localhost:9876";
     public static final String LOGIN = "/data/login/handleEmailPasswordAuth";
     public static final String test = "/data/profile/getSessionList";
+    public static final String AUTHORIZATION = "Authorization";
     public static final String ACCESSTOKEN = "accessToken";
     public static final String REFRESHTOKEN = "refreshToken";
 
@@ -83,7 +84,8 @@ public class Constant {
     public static final String KEY = "key";
     public static final String LOCALHOST = "127.0.0.1";
     public static final String DOMAIN = ".nocodebi.io";
-    public static final String UNFORMATTED_DOMAIN = "local-%s.nocodebi.io";
+    public static final String UNFORMATTED_HTTPS_DOMAIN = "https://local-%s-%s.nocodebi.io";
+    public static final String UNFORMATTED_DOMAIN = "local-%s-%s.nocodebi.io";
     public static String OBJECT_RETRIEVE_SUCCESSFULLY = "OBJECT_RETRIEVE_SUCCESSFULLY";
     public static String OBJECT_CREATED_SUCCESSFULLY = "OBJECT_CREATED_SUCCESSFULLY";
     public static String OBJECT_UPDATED_SUCCESSFULLY = "OBJECT_UPDATED_SUCCESSFULLY";

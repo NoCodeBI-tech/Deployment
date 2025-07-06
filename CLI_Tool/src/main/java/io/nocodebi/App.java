@@ -12,8 +12,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Scanner;
 
-public class App
-{
+public class App {
 
     public static String accessToken = "";
 
@@ -25,7 +24,7 @@ public class App
 
         try {
 
-            while(true) {
+            while (true) {
 
                 Scanner sc = new Scanner(System.in);
 
@@ -53,7 +52,8 @@ public class App
 
                     CookieStoreManager cookieStoreManager = new CookieStoreManager();
 
-                    if ("login".equalsIgnoreCase(command)) {;
+                    if ("login".equalsIgnoreCase(command)) {
+                        ;
 
                         Auth.login(cookieStoreManager);
 
@@ -100,7 +100,7 @@ public class App
                                 Constant.API_INSTALL_PRODUCT,
                                 Constant.EMPTY_JSON).body();
 
-                        String result = (String) Utilities.toResponseObj(responseObj).getData();
+                        String result = Utilities.toResponseObj(responseObj).getData().toString();
 
                         System.out.println("Installation Status : " + result);
 
@@ -111,7 +111,9 @@ public class App
                                 Constant.API_UNINSTALL_PRODUCT,
                                 Constant.EMPTY_JSON).body();
 
-                        String result = (String) Utilities.toResponseObj(responseObj).getData();
+                        System.out.println(responseObj);
+
+                        String result = Utilities.toResponseObj(responseObj).getData().toString();
 
                         System.out.println("Uninstallation Status : " + result);
 
@@ -143,7 +145,7 @@ public class App
 
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
 
