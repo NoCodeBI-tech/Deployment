@@ -7,6 +7,7 @@ global:
     domain: nocodebi.io
   appName: app
   userHome: ""
+  ingressURL: ""
   env:
     CENTRAL_SERVER_URL: "https://central.nocodebi.io/"
     PRODUCT_CONSOLE_SERVER_URL: "https://local-product.nocodebi.io/"
