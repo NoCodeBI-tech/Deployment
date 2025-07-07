@@ -6,6 +6,7 @@ public class Constant {
     public static final String SESSION_PATH = "\\.nocodebi\\session.json";
     public static final String CERTIFICATE_PATH = "\\.nocodebi\\cert.json";
     public static final String PRODUCT_CONSOLE = "https://product.nocodebi.io";
+    public static final String LOCAL_PRODUCT_CONSOLE = "https://local-product.nocodebi.io/";
     public static final String SERVICE = "http://localhost:9876";
     public static final String LOGIN = "/data/login/handleEmailPasswordAuth";
     public static final String test = "/data/profile/getSessionList";

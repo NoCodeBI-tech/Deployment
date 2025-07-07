@@ -331,6 +331,9 @@ public class Installation {
 
             context.setAppURL(appUrl);
 
+            if (!context.getProductURL().equals(Constant.LOCAL_PRODUCT_CONSOLE))
+                context.setProductURL(Constant.LOCAL_PRODUCT_CONSOLE);
+
             List<String> command = new ArrayList<>(List.of(
                     Constant.HELM,
                     Constant.UPGRADE,

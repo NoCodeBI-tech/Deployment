@@ -79,7 +79,7 @@ services:
 - name: appserver-connector
   image: appserver-connector
   port: 10003
-  path: /connector
+  path: /connector-server
   subDomain: local-
   replicaCount: 1
   autoscaling:
