@@ -41,7 +41,7 @@ services:
     maxReplicas: 5
     targetCPUUtilizationPercentage: 70
     targetMemoryUtilizationPercentage: 80
-  enableVolume: true
+  enableVolume: false
   volume:
     size: 10Gi
 
