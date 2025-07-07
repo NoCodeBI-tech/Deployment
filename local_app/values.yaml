@@ -9,6 +9,7 @@ global:
   userHome: ""
   ingressURL: ""
   env:
+    DATA_DIR: "/app/data/"
     CENTRAL_SERVER_URL: "https://central.nocodebi.io/"
     PRODUCT_CONSOLE_SERVER_URL: "https://local-product.nocodebi.io/"
     STAGE_ID: ""
