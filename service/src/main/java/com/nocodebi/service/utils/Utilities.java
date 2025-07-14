@@ -441,6 +441,8 @@ public class Utilities {
 
         try {
 
+            Security.addProvider(new BouncyCastleProvider());
+
             String hostsEntry = Constant.LOCALHOST + " " + String.format(Constant.UNFORMATTED_DOMAIN, stageName, appName);
 
             Path hostsPath = getHostFilePath();

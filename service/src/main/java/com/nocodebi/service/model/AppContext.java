@@ -37,24 +37,39 @@ public class AppContext {
     private String timestamp;
 
     public AppContext() {
+
     }
 
     public void setDefault() {
 
         this.stageId = "";
+
         this.appId = "";
+
         this.stageName = "";
+
         this.appName = "";
+
         this.versionId = "";
+
         this.userId = "";
+
         this.centralURL = "";
+
         this.productURL = "";
+
         this.appURL = "";
+
         this.premiseSHA = "";
+
         this.coreJarURL = "";
+
         this.m2ZipURL = "";
+
         this.chartURL = "";
+
         this.appDataPath = "/app/data";
+
         this.timestamp = String.valueOf(System.currentTimeMillis());
 
     }
@@ -84,19 +99,27 @@ public class AppContext {
     }
 
     public String getStageName() {
+
         return stageName;
+
     }
 
     public void setStageName(String stageName) {
+
         this.stageName = stageName;
+
     }
 
     public String getAppName() {
+
         return appName;
+
     }
 
     public void setAppName(String appName) {
+
         this.appName = appName;
+
     }
 
     public String getVersionId() {
@@ -160,11 +183,15 @@ public class AppContext {
     }
 
     public String getPremiseSHA() {
+
         return premiseSHA;
+
     }
 
     public void setPremiseSHA(String premiseSHA) {
+
         this.premiseSHA = premiseSHA;
+
     }
 
     public String getTimestamp() {
@@ -180,34 +207,51 @@ public class AppContext {
     }
 
     public String getCoreJarURL() {
+
         return coreJarURL;
+
     }
 
     public void setCoreJarURL(String coreJarURL) {
+
         this.coreJarURL = coreJarURL;
+
     }
 
     public String getM2ZipURL() {
+
         return m2ZipURL;
+
     }
 
     public void setM2ZipURL(String m2ZipURL) {
+
         this.m2ZipURL = m2ZipURL;
+
     }
 
     public String getChartURL() {
+
         return chartURL;
+
     }
 
     public void setChartURL(String chartURL) {
+
         this.chartURL = chartURL;
+
     }
 
     public String getAppDataPath() {
+
         return appDataPath;
+
     }
 
     public void setAppDataPath(String appDataPath) {
+
         this.appDataPath = appDataPath;
+
     }
+
 }

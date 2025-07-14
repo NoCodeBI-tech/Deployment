@@ -93,37 +93,37 @@ services:
   volume:
     size: 10Gi
 
-- name: appserver-hosted-database
-  image: appserver-hosted-database
-  port: 10012
-  path: /hostedDB
-  subDomain: local-
-  replicaCount: 1
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 5
-    targetCPUUtilizationPercentage: 70
-    targetMemoryUtilizationPercentage: 80
-  enableVolume: true
-  volume:
-    size: 10Gi
+# - name: appserver-hosted-database
+#   image: appserver-hosted-database
+#   port: 10012
+#   path: /hostedDB
+#   subDomain: local-
+#   replicaCount: 1
+#   autoscaling:
+#     enabled: false
+#     minReplicas: 1
+#     maxReplicas: 5
+#     targetCPUUtilizationPercentage: 70
+#     targetMemoryUtilizationPercentage: 80
+#   enableVolume: true
+#   volume:
+#     size: 10Gi
 
-- name: appserver-query
-  image: appserver-query
-  port: 10006
-  path: /query
-  subDomain: local-
-  replicaCount: 1
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 5
-    targetCPUUtilizationPercentage: 70
-    targetMemoryUtilizationPercentage: 80
-  enableVolume: true
-  volume:
-    size: 10Gi
+# - name: appserver-query
+#   image: appserver-query
+#   port: 10006
+#   path: /query
+#   subDomain: local-
+#   replicaCount: 1
+#   autoscaling:
+#     enabled: false
+#     minReplicas: 1
+#     maxReplicas: 5
+#     targetCPUUtilizationPercentage: 70
+#     targetMemoryUtilizationPercentage: 80
+#   enableVolume: true
+#   volume:
+#     size: 10Gi
 
 - name: appserver-security-provider
   image: appserver-security-provider
