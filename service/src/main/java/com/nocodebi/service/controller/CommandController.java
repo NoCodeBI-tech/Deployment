@@ -1,6 +1,8 @@
 package com.nocodebi.service.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.nocodebi.service.constant.Constant;
 import com.nocodebi.service.methods.Installation;
 import com.nocodebi.service.model.*;
@@ -12,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -203,7 +208,16 @@ public class CommandController {
 
         ResponseTransaction transaction = new ResponseTransaction();
 
-        AppContext context = Utilities.fromJson(request, AppContext.class);
+        AppContext context = Utilities.fromJson(request.path("appContext"), AppContext.class);
+
+        JsonNode instanceDetail = request.path("serverInstanceDetail");
+
+        Gson gson = new Gson();
+
+        Type listType = new TypeToken<List<ServerInstanceDetail>>() {
+        }.getType();
+
+        List<ServerInstanceDetail> serverInstanceDetails = gson.fromJson(String.valueOf(instanceDetail), listType);
 
         Response response = null;
 
@@ -219,9 +233,37 @@ public class CommandController {
 
             if (context != null) {
 
-                List<ContainerUsage> usages = Installation.getPodMetrics(
-                        context.getStageName() + context.getAppName(),
-                        null);
+                List
+                        <DeploymentMetricsSummary> deploymentMetricsSummaryList = Installation
+                        .getDeploymentMetricsSummary(
+                                context.getStageName() + context.getAppName(),
+                                null);
+
+                List<ServerInstanceDetail> usages = new ArrayList<>();
+
+                deploymentMetricsSummaryList.forEach(instance -> {
+
+                    String serverTag = Installation.
+                            findServerTagFromDeploymentName(instance.getDeploymentName());
+
+                    Optional<ServerInstanceDetail> matchedInstance = serverInstanceDetails
+                            .stream()
+                            .filter(i -> serverTag.equals(i.getName()))
+                            .findFirst();
+
+                    if (matchedInstance.isPresent()) {
+
+                        ServerInstanceDetail found = matchedInstance.get();
+
+                        found.setUsedCore(instance.getAvgCpu());
+
+                        found.setUsedRam(instance.getAvgMemory());
+
+                        usages.add(found);
+
+                    }
+
+                });
 
                 response = new Response(Constant.SUCCESS,
                         usages,
@@ -355,6 +397,8 @@ public class CommandController {
 
         ResponseTransaction transaction = new ResponseTransaction();
 
+        System.out.println("request >>> " + request);
+
         AppContext context = Utilities.fromJson(request.get("appContext"), AppContext.class);
 
         String action = request.get("action").asText();
@@ -375,7 +419,7 @@ public class CommandController {
 
                 boolean status = false;
 
-                if (action.equalsIgnoreCase("start")) {
+                if (action.equalsIgnoreCase("run")) {
 
                     status = Installation.scaleDeployment(context.getStageName() + context.getAppName(),
                             null,

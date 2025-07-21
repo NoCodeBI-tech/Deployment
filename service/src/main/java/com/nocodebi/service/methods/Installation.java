@@ -8,6 +8,7 @@ import com.nocodebi.service.utils.Utilities;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.StatusDetails;
+import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.ContainerMetrics;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsList;
@@ -317,6 +318,14 @@ public class Installation {
         try {
 
             String premisesSHA = DeviceFingerprintService.generateDeviceFingerprint();
+
+            if (context.getPremiseSHA() != null
+                    && !context.getPremiseSHA().isEmpty()
+                    && !premisesSHA.equals(context.getPremiseSHA())) {
+
+                return null;
+
+            }
             @SuppressWarnings("unchecked")
             Map<String, String> certificate = (Map<String, String>) Utilities.readDataFromWindows(Constant.CERTIFICATE_PATH);
 
@@ -466,7 +475,7 @@ public class Installation {
                 PodSummary summary = new PodSummary();
                 summary.name = pod.getMetadata().getName();
                 summary.ready = Utilities.formatReady(pod);
-                summary.status = pod.getStatus().getPhase();
+                summary.status = pod.getStatus().getPhase().toLowerCase();
 
                 int restartCount = pod.getStatus().getContainerStatuses().stream()
                         .mapToInt(cs -> cs.getRestartCount() != null ? cs.getRestartCount() : 0)
@@ -538,6 +547,121 @@ public class Installation {
                 .withName(podName)
                 .metric();
         return (podMetric == null) ? Collections.emptyList() : List.of(podMetric);
+    }
+
+    public static List<DeploymentMetricsSummary> getDeploymentMetricsSummary(String namespace, String deploymentName) {
+
+        try (KubernetesClient client = new KubernetesClientBuilder().build()) {
+
+            List<DeploymentMetricsSummary> summaries = new ArrayList<>();
+
+            List<Deployment> deployments;
+
+            if (deploymentName != null && !deploymentName.isBlank()) {
+                var dep = client.apps().deployments().inNamespace(namespace).withName(deploymentName).get();
+                deployments = (dep != null) ? List.of(dep) : Collections.emptyList();
+            } else {
+                deployments = client.apps().deployments().inNamespace(namespace).list().getItems();
+            }
+
+            for (var deployment : deployments) {
+                String name = deployment.getMetadata().getName();
+                var matchLabels = deployment.getSpec().getSelector().getMatchLabels();
+
+                if (matchLabels == null || matchLabels.isEmpty()) {
+                    continue;
+                }
+
+                var pods = client.pods()
+                        .inNamespace(namespace)
+                        .withLabels(matchLabels)
+                        .list()
+                        .getItems();
+
+                if (pods == null || pods.isEmpty()) {
+                    continue;
+                }
+
+                long totalCpuMilli = 0;
+                long totalMemoryBytes = 0;
+                int podCount = 0;
+
+                for (var pod : pods) {
+                    var podMetric = client.top()
+                            .pods()
+                            .inNamespace(namespace)
+                            .withName(pod.getMetadata().getName())
+                            .metric();
+
+                    if (podMetric != null && podMetric.getContainers() != null) {
+                        for (var container : podMetric.getContainers()) {
+                            var usage = container.getUsage();
+                            if (usage != null) {
+                                totalCpuMilli += parseCpuToMilli(String.valueOf(usage.get("cpu")));
+                                totalMemoryBytes += parseMemoryToBytes(String.valueOf(usage.get("memory")));
+                            }
+                        }
+                        podCount++;
+                    }
+                }
+
+                if (podCount > 0) {
+                    long avgCpu = totalCpuMilli / podCount;
+                    long avgMemory = totalMemoryBytes / podCount;
+
+                    summaries.add(new DeploymentMetricsSummary(
+                            name,
+                            String.valueOf(avgCpu),
+//                            avgCpu + "m",
+                            formatBytesToReadableMemory(avgMemory)
+//                            formatBytesToMi(avgMemory) + "Mi"
+                    ));
+                }
+            }
+
+            return summaries;
+
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
+    }
+
+    private static long parseCpuToMilli(String cpu) {
+        if (cpu.endsWith("n")) {
+            return Long.parseLong(cpu.replace("n", "")) / 1_000_000; // nano to milli
+        } else if (cpu.endsWith("m")) {
+            return Long.parseLong(cpu.replace("m", ""));
+        } else {
+            return Long.parseLong(cpu) * 1000; // cores to milli
+        }
+    }
+
+    private static long parseMemoryToBytes(String memory) {
+        if (memory.endsWith("Ki")) {
+            return Long.parseLong(memory.replace("Ki", "")) * 1024;
+        } else if (memory.endsWith("Mi")) {
+            return Long.parseLong(memory.replace("Mi", "")) * 1024 * 1024;
+        } else if (memory.endsWith("Gi")) {
+            return Long.parseLong(memory.replace("Gi", "")) * 1024 * 1024 * 1024;
+        } else {
+            return Long.parseLong(memory); // assume bytes
+        }
+    }
+
+    private static String formatBytesToReadableMemory(long bytes) {
+        if (bytes >= 1024L * 1024 * 1024) {
+            return (bytes / (1024L * 1024 * 1024)) + "GB";
+        } else if (bytes >= 1024L * 1024) {
+            return (bytes / (1024L * 1024)) + "MB";
+        } else if (bytes >= 1024L) {
+            return (bytes / 1024L) + "KB";
+        } else {
+            return String.valueOf(bytes); // bytes as is
+        }
+    }
+
+    private static long formatBytesToMi(long bytes) {
+        return bytes / (1024 * 1024);
     }
 
     private static void processPodMetrics(PodMetrics pod, List<ContainerUsage> usageList) {
@@ -688,6 +812,9 @@ public class Installation {
         try (KubernetesClient client = new KubernetesClientBuilder().build()) {
 
             if (deploymentName != null && !deploymentName.isBlank()) {
+
+                deploymentName = findDeploymentName(client, namespace, deploymentName);
+
                 // Scale a specific deployment
                 client.apps()
                         .deployments()
@@ -725,6 +852,44 @@ public class Installation {
             System.err.printf("❌ Failed to scale deployment(s) in namespace '%s': %s%n", namespace, e.getMessage());
             return false;
         }
+    }
+
+    public static String findDeploymentName(KubernetesClient client,
+                                            String namespace,
+                                            String serverTag) {
+
+        if (serverTag != null && serverTag.startsWith("SERVER_")) {
+            String suffix = serverTag.substring("SERVER_".length()).toLowerCase();
+
+            var deployments = client.apps()
+                    .deployments()
+                    .inNamespace(namespace)
+                    .list()
+                    .getItems();
+
+            for (var deployment : deployments) {
+                String name = deployment.getMetadata().getName();
+                if (name.toLowerCase().endsWith("-" + suffix + "-deployment")) {
+                    return name;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static String findServerTagFromDeploymentName(String deploymentName) {
+        if (deploymentName != null && deploymentName.endsWith("-deployment")) {
+            // Remove the "-deployment" suffix
+            String baseName = deploymentName.substring(0, deploymentName.length() - "-deployment".length());
+
+            // Find the last hyphen to isolate the suffix
+            int lastDashIndex = baseName.lastIndexOf('-');
+            if (lastDashIndex != -1 && lastDashIndex < baseName.length() - 1) {
+                String suffix = baseName.substring(lastDashIndex + 1);
+                return "SERVER_" + suffix.toUpperCase();
+            }
+        }
+        return null;
     }
 
     public static boolean deleteNamespaceIfEmpty(String namespace) {

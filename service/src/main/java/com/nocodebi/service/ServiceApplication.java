@@ -15,7 +15,7 @@ public class ServiceApplication {
         try {
 
             start();
-            
+
         } catch (Exception ignore) {
 
         }
