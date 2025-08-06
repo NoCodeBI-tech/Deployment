@@ -1,10 +1,10 @@
-package com.nocodebi.service.methods;
+package com.nocodebi.prodservice.methods;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nocodebi.service.constant.Constant;
-import com.nocodebi.service.model.*;
-import com.nocodebi.service.service.DeviceFingerprintService;
-import com.nocodebi.service.utils.Utilities;
+import com.nocodebi.prodservice.constant.Constant;
+import com.nocodebi.prodservice.model.*;
+import com.nocodebi.prodservice.service.DeviceFingerprintService;
+import com.nocodebi.prodservice.utils.Utilities;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.StatusDetails;
@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -33,287 +32,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Installation {
 
-//    public static String buildTraefik() {
-//
-//        StringBuilder output = null;
-//
-//        try {
-//
-//            List<String> command = new ArrayList<>();
-//
-//            output = new StringBuilder();
-//
-//            command.add(Constant.KUBECTL);
-//
-//            command.add(Constant.APPLY);
-//
-//            command.add(Constant._FILE);
-//
-//            command.add(Constant.TRAEFIK_CRD_CMD);
-//
-//            output.append(runProcess(command).get(Constant.RESULT));
-//
-//            output.append("\n");
-//
-//            command = new ArrayList<>();
-//
-//            command.add(Constant.KUBECTL);
-//
-//            command.add(Constant.APPLY);
-//
-//            command.add(Constant._FILE);
-//
-//            command.add(Constant.TRAEFIK_URL);
-//
-////            System.out.println("buildTraefik >>> Command : " + String.join(" ", command));
-//
-//            output.append(runProcess(command).get(Constant.RESULT));
-//
-////            System.out.println("buildTraefik >>> " + output);
-//
-//            return output.toString();
-//
-//        }catch (Exception e){
-//
-//            e.printStackTrace();
-//
-//            return output == null ? null : output.toString();
-//        }
-//
-//    }
-
-    public static boolean buildTraefik() {
-        try (KubernetesClient client = new KubernetesClientBuilder().build()) {
-
-            // Load CRD from URL
-            try (InputStream crdStream = new URL(Constant.TRAEFIK_CRD_CMD).openStream()) {
-                client.load(crdStream).create();
-            }
-
-            // Load Traefik from URL
-            try (InputStream urlStream = new URL(Constant.TRAEFIK_URL).openStream()) {
-                client.load(urlStream).create();
-            }
-
-            System.out.println("Traefik applied successfully.");
-            return true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error applying Traefik: " + e.getMessage());
-            return false;
-        }
-    }
-
-    public static boolean uninstallTraefik() {
-        try (KubernetesClient client = new KubernetesClientBuilder().build()) {
-
-            try (InputStream crdStream = new URL(Constant.TRAEFIK_CRD_CMD).openStream()) {
-                client.load(crdStream).delete();
-            }
-
-            try (InputStream urlStream = new URL(Constant.TRAEFIK_URL).openStream()) {
-                client.load(urlStream).delete();
-            }
-
-            System.out.println("Traefik deleted successfully.");
-            return true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error deleting Traefik: " + e.getMessage());
-            return false;
-        }
-    }
-
-
-//    public static String uninstallTraefik() {
-//
-//        List<String> command = new ArrayList<>();
-//
-//        StringBuilder output = new StringBuilder();
-//
-//        command.add(Constant.KUBECTL);
-//
-//        command.add(Constant.DELETE);
-//
-//        command.add(Constant._FILE);
-//
-//        command.add(Constant.TRAEFIK_CRD_CMD);
-//
-//        output.append(runProcess(command).get(Constant.RESULT).toString());
-//
-//        output.append("\n");
-//
-//        command = new ArrayList<>();
-//
-//        command.add(Constant.KUBECTL);
-//
-//        command.add(Constant.DELETE);
-//
-//        command.add(Constant._FILE);
-//
-//        command.add(Constant.TRAEFIK_URL);
-//
-//        System.out.println("Command : " + String.join(" ", command));
-//
-//        output.append(runProcess(command).get(Constant.RESULT).toString());
-//
-//        System.out.println("uninstall Traefik >>> " + output);
-//
-//        return output.toString();
-//
-//    }
-
-//    public static String buildProductConsole() {
-//
-//        String output = null;
-//
-//        try {
-//
-//            Map<String, String> certificate = Utilities.setup_Wild_Card_Certificate();
-//
-//            List<String> command = new ArrayList<>();
-//
-//            command.add(Constant.HELM);
-//
-//            command.add(Constant.UPGRADE);
-//
-//            command.add(Constant._INSTALL);
-//
-//            command.add(Constant.PRODUCT_CONSOLE_NAME);
-//
-//            command.add(Constant.PRODUCT_CONSOLE_URL);
-//
-//            command.add(Constant._NAMESPACE + Constant.PRODUCT_CONSOLE_NAME);
-//
-//            command.add(Constant._CREATE_NAMESPACE);
-//
-//            command.add(Constant._SET);
-//
-//            command.add(Constant.GLOBAL_APPNAME +
-//                    Constant.PRODUCT_CONSOLE_NAME +
-//                    Constant.COMMA +
-//                    Constant.GLOBAL_TLS_CRT +
-//                    certificate.get("crt").toString() +
-//                    Constant.COMMA +
-//                    Constant.GLOBAL_TLS_KEY +
-//                    certificate.get("key").toString());
-//
-////            System.out.println("buildProductConsole >>> Command : " + String.join(" ", command));
-//
-//            output = runProcess(command).toString();
-//
-////            System.out.println("buildProductConsole >>> " + output);
-//
-//            return output;
-//
-//        }catch (Exception e){
-//
-//            e.printStackTrace();
-//
-//            return output;
-//        }
-//
-//    }
-//
-//    public static String uninstallProductConsole() {
-//
-//        List<String> command = new ArrayList<>();
-//
-//        command.add(Constant.HELM);
-//
-//        command.add(Constant.UNINSTALL);
-//
-//        command.add(Constant.PRODUCT_CONSOLE_NAME);
-//
-//        command.add(Constant._NAMESPACE + Constant.PRODUCT_CONSOLE_NAME);
-//
-//        System.out.println("Command : " + String.join(" ", command));
-//
-//        return runProcess(command).toString();
-//
-//    }
-
-    public static CommandResult buildProductConsole() {
-        try {
-
-            Map<String, String> certificate = Utilities.setup_Wild_Card_Certificate();
-
-            if (!certificate.containsKey(Constant.CRT) || !certificate.containsKey(Constant.KEY)) {
-                System.out.println("Error: Missing wildcard certificate data");
-                return null;
-            }
-
-            List<String> command = new ArrayList<>(List.of(
-                    Constant.HELM,
-                    Constant.UPGRADE,
-                    Constant._INSTALL,
-                    Constant.PRODUCT_CONSOLE_NAME,
-                    Constant.PRODUCT_CONSOLE_URL,
-                    Constant._NAMESPACE + Constant.PRODUCT_CONSOLE_NAME,
-                    Constant._CREATE_NAMESPACE,
-                    Constant._SET,
-                    Constant.GLOBAL_APPNAME + Constant.PRODUCT_CONSOLE_NAME +
-                            Constant.COMMA + Constant.GLOBAL_TLS_CRT + certificate.get(Constant.CRT) +
-                            Constant.COMMA + Constant.GLOBAL_TLS_KEY + certificate.get(Constant.KEY) +
-                            Constant.COMMA + Constant.GLOBAL_USER_HOME + Utilities.getLinuxStyleDataPath() +
-                            Constant.COMMA + Constant.GLOBAL_ENV_APP_CHART_URL + Constant.APP_URL
-            ));
-
-            // Debug: Uncomment if needed
-            // System.out.println("buildProductConsole >>> Command: " + String.join(" ", command));
-
-            CommandResult result = runProcess(command);
-
-            if (result.isSuccess()) {
-                System.out.println("Output:\n" + result.getStdout());
-            } else {
-                System.err.println("Error:\n" + result.getStderr());
-            }
-
-            return result;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error building product console: " + e.getMessage());
-            return null;
-        }
-    }
-
-    public static CommandResult uninstallProductConsole() {
-        try {
-            List<String> command = List.of(
-                    Constant.HELM,
-                    Constant.UNINSTALL,
-                    Constant.PRODUCT_CONSOLE_NAME,
-                    Constant._NAMESPACE + Constant.PRODUCT_CONSOLE_NAME
-            );
-
-            // Debug: Uncomment if needed
-            // System.out.println("uninstallProductConsole >>> Command: " + String.join(" ", command));
-
-            CommandResult result = runProcess(command);
-
-            if (result.isSuccess()) {
-                System.out.println("Output:\n" + result.getStdout());
-            } else {
-                System.err.println("Error:\n" + result.getStderr());
-            }
-
-            return result;
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-            System.out.println("Error uninstalling product console: " + e.getMessage());
-
-            return null;
-
-        }
-    }
-
     public static AppContext buildApplication(AppContext context) {
         try {
 
@@ -326,22 +44,6 @@ public class Installation {
                 return null;
 
             }
-            @SuppressWarnings("unchecked")
-            Map<String, String> certificate = (Map<String, String>) Utilities.readDataFromWindows(Constant.CERTIFICATE_PATH);
-
-            if (certificate == null || !certificate.containsKey(Constant.CRT) || !certificate.containsKey(Constant.KEY)) {
-                System.out.println("Error: Certificate not found or incomplete.");
-                return null;
-            }
-
-            String appUrl = Utilities.addHostEntryWithAppName(
-                    context.getStageName(),
-                    context.getAppName());
-
-            context.setAppURL(appUrl);
-
-            if (!context.getProductURL().equals(Constant.LOCAL_PRODUCT_CONSOLE))
-                context.setProductURL(Constant.LOCAL_PRODUCT_CONSOLE);
 
             List<String> command = new ArrayList<>(List.of(
                     Constant.HELM,
@@ -353,9 +55,7 @@ public class Installation {
                     Constant._CREATE_NAMESPACE,
                     Constant._SET,
                     Constant.GLOBAL_APPNAME + context.getStageName() + context.getAppName() +
-                            Constant.COMMA + Constant.GLOBAL_TLS_CRT + certificate.get(Constant.CRT) +
-                            Constant.COMMA + Constant.GLOBAL_TLS_KEY + certificate.get(Constant.KEY) +
-                            Constant.COMMA + Constant.GLOBAL_INGRESS_URL + String.format(Constant.UNFORMATTED_DOMAIN, context.getStageName(), context.getAppName()) +
+                            Constant.COMMA + Constant.GLOBAL_INGRESS_URL + context.getAppURL() +
                             Constant.COMMA + Constant.GLOBAL_USER_HOME + Utilities.getLinuxStyleDataPath() +
                             Constant.COMMA + Constant.GLOBAL_ENV_STAGE_ID + context.getStageId() +
                             Constant.COMMA + Constant.GLOBAL_ENV_APP_ID + context.getAppId() +
@@ -434,7 +134,6 @@ public class Installation {
             return null;
         }
     }
-
 
     public static void listResources(String namespace) {
         try (KubernetesClient client = new KubernetesClientBuilder().build()) {
@@ -741,70 +440,6 @@ public class Installation {
 
             return e.getLocalizedMessage();
 
-        }
-    }
-
-    public static List<PodStatusInfo> waitForPodsRunning(String namespace,
-                                                         String podName,
-                                                         int timeoutSeconds) {
-        List<PodStatusInfo> podStatusList = new ArrayList<>();
-
-        try (KubernetesClient client = new KubernetesClientBuilder().build()) {
-            long startTime = System.currentTimeMillis();
-            long timeoutMillis = timeoutSeconds * 1000L;
-
-            while ((System.currentTimeMillis() - startTime) < timeoutMillis) {
-                podStatusList.clear();
-                boolean allRunning = true;
-
-                if (podName != null && !podName.isBlank()) {
-                    var pod = client.pods().inNamespace(namespace).withName(podName).get();
-                    if (pod == null) return List.of(); // or throw exception
-
-                    String phase = pod.getStatus().getPhase();
-                    String reason = pod.getStatus().getReason();
-                    String message = pod.getStatus().getMessage();
-
-                    podStatusList.add(new PodStatusInfo(podName, phase, reason, message));
-
-                    if (!"Running".equalsIgnoreCase(phase)) {
-                        allRunning = false;
-                    }
-
-                } else {
-                    var pods = client.pods().inNamespace(namespace).list().getItems();
-                    for (var pod : pods) {
-                        String name = pod.getMetadata().getName();
-                        String phase = pod.getStatus().getPhase();
-                        String reason = pod.getStatus().getReason();
-                        String message = pod.getStatus().getMessage();
-
-                        podStatusList.add(new PodStatusInfo(name, phase, reason, message));
-
-                        if (!"Running".equalsIgnoreCase(phase)) {
-                            allRunning = false;
-                        }
-                    }
-                }
-
-                if (allRunning) {
-                    System.out.println("✅ All pods are running in namespace: " + namespace);
-                    return podStatusList;
-                }
-
-                Thread.sleep(3000);
-            }
-
-            System.out.println("❌ Timeout reached. Final pod statuses:");
-            podStatusList.forEach(p ->
-                    System.out.printf("Pod: %s | Phase: %s | Reason: %s\n", p.getName(), p.getPhase(), p.getReason())
-            );
-
-            return podStatusList;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return List.of(); // return empty on error
         }
     }
 

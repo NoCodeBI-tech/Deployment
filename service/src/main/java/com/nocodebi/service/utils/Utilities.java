@@ -44,6 +44,12 @@ import java.util.*;
 
 public class Utilities {
 
+    public static boolean isNotNullOrBlank(String input) {
+
+        return input != null && !input.trim().isEmpty();
+
+    }
+
     public static <T> T fromJson(Object object, Class<T> clazz) {
 
         Gson gson = new Gson();

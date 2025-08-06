@@ -1,0 +1,17 @@
+{{- range $service := .Values.services }}
+{{- if $service.enableVolume }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $.Values.global.appName }}-{{ $service.name }}-pvc
+  namespace: {{ $.Values.global.appName }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ $service.volume.size }}
+  storageClassName: local-storage
+---
+{{- end }}
+{{- end }}

@@ -12,11 +12,11 @@ global:
     DATA_DIR: "/app/data/"
     CENTRAL_SERVER_URL: "https://central.nocodebi.io/"
     PRODUCT_CONSOLE_SERVER_URL: "https://local-product.nocodebi.io/"
+    APP_SERVER_URL: ""
     STAGE_ID: ""
     APP_ID: ""
     VERSION_ID: ""
     USER_ID: ""
-    APP_SERVER_URL: ""
     PREMISES_SHA: ""
     CORE_JAR_URL: ""
     M2_ZIP_URL: ""
@@ -93,41 +93,41 @@ services:
   volume:
     size: 10Gi
 
-# - name: appserver-hosted-database
-#   image: appserver-hosted-database
-#   port: 10012
-#   path: /hostedDB
-#   subDomain: local-
-#   replicaCount: 1
-#   autoscaling:
-#     enabled: false
-#     minReplicas: 1
-#     maxReplicas: 5
-#     targetCPUUtilizationPercentage: 70
-#     targetMemoryUtilizationPercentage: 80
-#   enableVolume: true
-#   volume:
-#     size: 10Gi
+- name: appserver-hosted-database
+  image: appserver-hosted-db
+  port: 10004
+  path: /hostedDB
+  subDomain: local-
+  replicaCount: 1
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+  enableVolume: true
+  volume:
+    size: 10Gi
 
-# - name: appserver-query
-#   image: appserver-query
-#   port: 10006
-#   path: /query
-#   subDomain: local-
-#   replicaCount: 1
-#   autoscaling:
-#     enabled: false
-#     minReplicas: 1
-#     maxReplicas: 5
-#     targetCPUUtilizationPercentage: 70
-#     targetMemoryUtilizationPercentage: 80
-#   enableVolume: true
-#   volume:
-#     size: 10Gi
+- name: appserver-query
+  image: appserver-query
+  port: 10005
+  path: /query
+  subDomain: local-
+  replicaCount: 1
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+  enableVolume: true
+  volume:
+    size: 10Gi
 
 - name: appserver-security-provider
-  image: appserver-security-provider
-  port: 10013
+  image: appserver-security
+  port: 10008
   path: /security
   subDomain: local-
   replicaCount: 1
