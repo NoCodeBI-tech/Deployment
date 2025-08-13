@@ -3,13 +3,13 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ $.Values.global.appName }}-{{ $service.name }}-hpa
+  name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ $.Values.global.env.INSTANCE_ID }}-hpa
   namespace: {{ $.Values.global.appName }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ $.Values.global.appName }}-{{ $service.name }}-deployment
+    name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ $.Values.global.env.INSTANCE_ID }}-deployment
   minReplicas: {{ $service.autoscaling.minReplicas }}
   maxReplicas: {{ $service.autoscaling.maxReplicas }}
   {{- if or $service.autoscaling.targetCPUUtilizationPercentage $service.autoscaling.targetMemoryUtilizationPercentage }}

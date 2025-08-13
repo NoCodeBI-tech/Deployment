@@ -64,11 +64,13 @@ public class Constant {
     public static final String GLOBAL_ENV_CORE_JAR_URL = "global.env.CORE_JAR_URL=";
     public static final String GLOBAL_ENV_M2_ZIP_URL = "global.env.M2_ZIP_URL=";
     public static final String GLOBAL_ENV_APP_DATA_PATH = "global.env.APP_DATA_PATH=";
+    public static final String GLOBAL_ENV_INSTANCE_ID = "global.env.INSTANCE_ID=";
     public static final String GLOBAL_IMAGE_TAG_LATEST = "global.image.tag=latest";
     public static final String GLOBAL_IMAGE_TAG = "global.image.tag=";
     public static final String SEMICOLON = ";";
     // Content Urls
     public static final String APP_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/local_app.tgz";
+    public static final String HOSTED_DATABASE_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/local_hosted_database_server.tgz";
     public static final String PRODUCT_CONSOLE_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/local_product.tgz";
     public static final String TRAEFIK_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/traefik/traefik.yml";
     public static final String TRAEFIK_CRD_CMD = "https://raw.githubusercontent.com/traefik/traefik/v2.10/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml";

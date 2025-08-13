@@ -36,6 +36,8 @@ public class AppContext {
 
     private String timestamp;
 
+    private String instanceId;
+
     public AppContext() {
 
     }
@@ -71,6 +73,8 @@ public class AppContext {
         this.appDataPath = "/app/data";
 
         this.timestamp = String.valueOf(System.currentTimeMillis());
+
+        this.instanceId = "";
 
     }
 
@@ -254,4 +258,12 @@ public class AppContext {
 
     }
 
+    public String getInstanceId() {
+        return instanceId;
+    }
+
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
+    
 }

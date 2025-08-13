@@ -80,19 +80,19 @@ services:
   volume:
     size: 10Gi
 
-- name: appserver-hosted-database
-  image: appserver-hosted-db
-  port: 10004
-  path: /hostedDB
-  autoscaling:
-    enabled: true
-    minReplicas: 1
-    maxReplicas: 5
-    targetCPUUtilizationPercentage: 70
-    targetMemoryUtilizationPercentage: 80
-  enableVolume: true
-  volume:
-    size: 10Gi
+# - name: appserver-hosted-database
+#   image: appserver-hosted-db
+#   port: 10004
+#   path: /hostedDB
+#   autoscaling:
+#     enabled: true
+#     minReplicas: 1
+#     maxReplicas: 5
+#     targetCPUUtilizationPercentage: 70
+#     targetMemoryUtilizationPercentage: 80
+#   enableVolume: true
+#   volume:
+#     size: 10Gi
 
 - name: appserver-query
   image: appserver-query

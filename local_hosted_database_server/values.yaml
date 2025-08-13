@@ -21,6 +21,7 @@ global:
     CORE_JAR_URL: ""
     M2_ZIP_URL: ""
     APP_DATA_PATH: ""
+    INSTANCE_ID: ""
   tls:
     crt: ""
     key: ""
@@ -29,122 +30,11 @@ global:
     key: "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2QUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktZd2dnU2lBZ0VBQW9JQkFRQzNpWTdJYVhkNE5BSjYKNWtRUXcxTkFYUFQweEh5dm54WnYyQk9oMTUzQmNtYWJPdjI5UXBhNGpYTWNmd2w0QWVDYXlteHE0ZHdvc3F2SApFOHFZNUNtVEN6MlVuUnE5dHBXWWlHYUR4bkVMS1dJakZDMUc1c2hiMTJseDlHbFpVbXlnNEc2UThDMnVscW9CCllqMUVaNEd6S044ZkFFNjBKQmZRNStoeUJzdUVjeWhudUFEblE5Vy9WTHN2cHViOXhNUENldkNISDZZMjZtL0kKS2JwenQ1a013cFk2L25nRkJxUnQvb0RYMFEva0o1bUFOaUpvMWY1dHBBeHo2WjNjcExFeWxFV2JwTGY2WG0yMgpwSHB6NzlKS3F6Zkx2QWtsUEh5U2YydmhYb2U0UEVKalFBMkNaOUp5RDZSZHJqSncvZGtaU0V3cEhzTzJoWi9BCkw0U2djbVR4QWdNQkFBRUNnZ0VBRWpvbWhHKzQ3aWFZSW5Wd3lBdGwzcXY4cGJ4SHQ3ZEFacTRhVVFYVlJHdGsKbGtEM0J3OHdZYmFtZW11QldMb3pBSnhleFFTV05USjlUY0dBNnNzcDk5RHpkaWxlQ1A0emdCajN1Vm1CUzM3NgpJSXExN21jbiticjhYVlZOQ3hKYytHTWhoK0phWHc3V1psbkh4TjNVcXlMQmVkWXhlc0ZrM2huUjQxVWFiQlpLCmRHRlJDc2JIUE9RZmRFSGViVmpjUG1iQUJiRldyekV2YkJacVUyeTNTZFo5RDIyaENMelozYTk0Y3AyMGFwa0IKUmtsMzZLR2JiOC9LL29Nelp4cllpZnVyUE9ZOHRVMFp2TmE0Y0lLYkNZdGY3T3VXRVVYS3hINXdKdXY2VmlhegpFbHlyNEZsUGZMMTlFTzk1OXlRRmd3Y0J1ZkxYSjlhSXpLa3dXb1J4YXdLQmdRREhBZnhULzN5NGFzdTduaG1FCjg5dHFuU1hGUEhHOGVLM1BzaXZkS0ZiYXN5OVUyMzRYSFpUaXV2M1JkcXJxT2c3dTg2VXJ1ZGlqbFFkNjdZWk8KVzl3Wk8vTzA4VXdUeEozbURzT28wdGhMU0xGVldpZGJyWWJNclQwVzZ1QWpNcktTM0l0Ui9ROG5RRUtYVnJiUgoxRWVUODYrY1pZK21qZGFkYXBIeEJObTc0d0tCZ1FEc0dXQng5Z0Q1SGd0azFpZ0RuR1dLQnRSK1hacWxCdDdqCnpwR3BpY3hLc0VZNXI4cnZvVGd3UG1MZ0IvNk9sKzF4cm5ZL3FZK2gzWW56cXp4R2xRSzk5MG1tVmRjRHhMZE8KQS9Cc1ZsWmhRdnBIY0k3Q0taUnk4QUkyaTA1Q0k2enJYb1NBS3BQa0txbTN0MjdXRG5IRDcza21xM3dJZ0lIVQpYYTNtT0JKY0d3S0JnSE53TTI2R1JWSzBvSG0wdkJqalcrUDhSR3lsSTFTd3JDSk91Q01SdzFBWm9Oc1lkNHZ4CkhPeG9pOU4xZ3E5Yi9rMmVCN0hWbkZWSG5ZOHhPVGM3RWZHUlZVMGdxNERNRE12bXhKaXB0YzMxM09nbDQ2N0sKZWVkQWxxODBqOC9iR0xzWU03amJrbTZ5Vis1eDNwclpDS3hLTHhRSjFjcEhmTGJUbXRTMGU1a0JBb0dBTWZXOAp2dUM3bS91TGxhN3JrTGdMbElXVmVaZjlIV2F5eTZudWtOMmo2VG9iNGlFYzVGQk5QNGcwREF3bEJhK0lnMEhUCnErMEpnOHNKWWhLZUVxRjlqdzFBL0gyMW5ncUdiMi9OOUY3Z3NId24wZTR6aDBxZEt5VTJrcXd2eHpjZFpFRC8KOE04UnRIcUNwMm1kZnBaWDVJcE1MSzZrOUhlZEFYOUJTVEljVUhrQ2dZQVJFYnNzTHVYWEpSNFdmN1RDTUkwNQpUdjhsZHVCUDVWLzU4cUsxbU9jdXBhSVZ1MDNLM21WT2l3RjVEMkpVTi9sd1JhZkN4cUdmQVZ5bDhEbXJUYlY4CkpGNUtCdjBHWVVSUTZOOFJSc3VUS3V4Nm8zWWxGZm1Md0xwRmJTcDVvZTQ1Vk04MFNvNDBCKzV6M0tEa3lXZEkKM2U2dmdmZjJwQzZCd1NsTjBySmtBQT09Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K"
 
 services:
-- name: appserver-admin
-  image: appserver-admin
-  port: 10002
-  path: /
-  subDomain: local-
-  replicaCount: 1
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 5
-    targetCPUUtilizationPercentage: 70
-    targetMemoryUtilizationPercentage: 80
-  enableVolume: false
-  volume:
-    size: 10Gi
 
-- name: appserver-flow
-  image: appserver-flow
-  port: 10009
-  path: /flow
-  subDomain: local-
-  replicaCount: 1
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 5
-    targetCPUUtilizationPercentage: 70
-    targetMemoryUtilizationPercentage: 80
-  enableVolume: true
-  volume:
-    size: 10Gi
-
-- name: appserver-configuration
-  image: appserver-configuration
-  port: 10007
-  path: /config
-  subDomain: local-
-  replicaCount: 1
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 5
-    targetCPUUtilizationPercentage: 70
-    targetMemoryUtilizationPercentage: 80
-  enableVolume: true
-  volume:
-    size: 10Gi
-
-- name: appserver-connector
-  image: appserver-connector
-  port: 10003
-  path: /connector-server
-  subDomain: local-
-  replicaCount: 1
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 5
-    targetCPUUtilizationPercentage: 70
-    targetMemoryUtilizationPercentage: 80
-  enableVolume: true
-  volume:
-    size: 10Gi
-
-# - name: appserver-hosted-database
-#   image: appserver-hosted-db
-#   port: 10004
-#   path: /hostedDB
-#   subDomain: local-
-#   replicaCount: 1
-#   autoscaling:
-#     enabled: false
-#     minReplicas: 1
-#     maxReplicas: 5
-#     targetCPUUtilizationPercentage: 70
-#     targetMemoryUtilizationPercentage: 80
-#   enableVolume: true
-#   volume:
-#     size: 10Gi
-
-- name: appserver-query
-  image: appserver-query
-  port: 10005
-  path: /query
-  subDomain: local-
-  replicaCount: 1
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 5
-    targetCPUUtilizationPercentage: 70
-    targetMemoryUtilizationPercentage: 80
-  enableVolume: true
-  volume:
-    size: 10Gi
-
-- name: appserver-security-provider
-  image: appserver-security
-  port: 10008
-  path: /security
-  subDomain: local-
-  replicaCount: 1
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 5
-    targetCPUUtilizationPercentage: 70
-    targetMemoryUtilizationPercentage: 80
-  enableVolume: true
-  volume:
-    size: 10Gi
-
-- name: appserver-view
-  image: appserver-view
-  port: 10006
-  path: /view
+- name: appserver-hosted-database
+  image: appserver-hosted-db
+  port: 10004
+  path: /hostedDB
   subDomain: local-
   replicaCount: 1
   autoscaling:

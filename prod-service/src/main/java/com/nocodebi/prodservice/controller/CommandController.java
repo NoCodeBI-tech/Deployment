@@ -118,6 +118,100 @@ public class CommandController {
 
     }
 
+    @PostMapping("/buildHostedDB")
+
+    public ResponseEntity<Response> buildHostedDB(@RequestBody JsonNode request,
+                                                  HttpServletRequest httpServletRequest) {
+
+        ResponseTransaction transaction = new ResponseTransaction();
+
+        AppContext context = Utilities.fromJson(request, AppContext.class);
+
+        System.out.println("buildHostedDB : " + request);
+
+        System.out.println("context : " + Utilities.toJson(context));
+
+        Response response = null;
+
+        if (!Utilities.validateRequest(httpServletRequest)) {
+
+            response = new Response(
+                    Constant.UNAUTHORISED,
+                    null,
+                    Constant.UNAUTHORISED,
+                    transaction);
+
+        } else {
+
+            context = Installation.buildHostedDB(context);
+
+            if (context != null) {
+
+                response = new Response(Constant.SUCCESS,
+                        context,
+                        Constant.OBJECT_CREATED_SUCCESSFULLY,
+                        transaction);
+
+            } else {
+
+                response = new Response(Constant.ERROR,
+                        null,
+                        Constant.ERROR,
+                        transaction);
+
+            }
+
+        }
+
+        return ResponseEntity.ok(response);
+
+    }
+
+    @PostMapping("/deleteHostedDB")
+
+    public ResponseEntity<Response> deleteHostedDB(@RequestBody JsonNode request,
+                                                   HttpServletRequest httpServletRequest) {
+
+        ResponseTransaction transaction = new ResponseTransaction();
+
+        AppContext context = Utilities.fromJson(request, AppContext.class);
+
+        Response response;
+
+        if (!Utilities.validateRequest(httpServletRequest)) {
+
+            response = new Response(
+                    Constant.UNAUTHORISED,
+                    null,
+                    Constant.UNAUTHORISED,
+                    transaction);
+
+        } else {
+
+            context = Installation.uninstallHostedDB(context);
+
+            if (context != null) {
+
+                response = new Response(Constant.SUCCESS,
+                        context,
+                        Constant.OBJECT_DELETED_SUCCESSFULLY,
+                        transaction);
+
+            } else {
+
+                response = new Response(Constant.ERROR,
+                        null,
+                        Constant.ERROR,
+                        transaction);
+
+            }
+
+        }
+
+        return ResponseEntity.ok(response);
+
+    }
+
     @PostMapping("/resourceUsage")
 
     public ResponseEntity<Response> resourceUsage(@RequestBody JsonNode request,

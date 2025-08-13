@@ -22,7 +22,6 @@ global:
     M2_ZIP_URL: ""
     APP_DATA_PATH: "/app/data/"
     INSTANCE_ID: ""
-    DATABASE_ID: ""
 
 services:
 

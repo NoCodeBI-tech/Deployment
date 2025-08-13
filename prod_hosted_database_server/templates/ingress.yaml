@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $.Values.global.appName }}-{{ $service.name }}-ingress
+  name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ $.Values.global.env.INSTANCE_ID }}-ingress
   namespace: {{ $.Values.global.appName }}
   annotations:
     kubernetes.io/ingress.class: "traefik"
@@ -18,7 +18,7 @@ spec:
           pathType: Prefix
           backend:
             service:
-              name: {{ $.Values.global.appName }}-{{ $service.name }}-service
+              name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ $.Values.global.env.INSTANCE_ID }}-service
               port:
                 number: 80
   tls:
