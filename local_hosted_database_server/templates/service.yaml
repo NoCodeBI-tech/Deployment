@@ -2,11 +2,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ $.Values.global.env.INSTANCE_ID }}-service
+  name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID }}-service
   namespace: {{ $.Values.global.appName }}
 spec:
   selector:
-    app: {{ $.Values.global.appName }}-{{ $service.name }}-{{ $.Values.global.env.INSTANCE_ID }}
+    app: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID }}
   ports:
   - protocol: TCP
     port: 80

@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ $.Values.global.env.INSTANCE_ID }}-pvc
+  name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID }}-pvc
   namespace: {{ $.Values.global.appName }}
 spec:
   accessModes:

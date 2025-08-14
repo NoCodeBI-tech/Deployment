@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ $.Values.global.env.INSTANCE_ID }}-pv
+  name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID }}-pv
 spec:
   capacity:
     storage: {{ $service.volume.size }}
@@ -12,7 +12,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
   hostPath:
-    path: {{ $.Values.global.userHome }}/data/{{ $.Values.global.appName }}/{{ $service.name }}-{{ $.Values.global.env.INSTANCE_ID }}
+    path: {{ $.Values.global.userHome }}/data/{{ $.Values.global.appName }}/{{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID }}
     type: DirectoryOrCreate
 ---
 {{- end }}
