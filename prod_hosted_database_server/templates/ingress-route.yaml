@@ -2,7 +2,7 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID | lower }}-ingressroute
+  name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 10 $.Values.global.env.INSTANCE_ID | lower }}-ingressroute
   namespace: {{ $.Values.global.appName }}
 spec:
   entryPoints:
@@ -11,7 +11,7 @@ spec:
     - kind: Rule
       match: Host(`{{ $.Values.global.ingressURL }}`) && PathPrefix(`{{ $service.path }}`) && PathRegexp(`^{{ $service.path }}/.*/({{ $.Values.global.env.INSTANCE_ID }})$`)
       services:
-        - name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID | lower }}-service
+        - name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 10 $.Values.global.env.INSTANCE_ID | lower }}-service
           port: 80
   tls:
     secretName: wildcard-tls-secret
