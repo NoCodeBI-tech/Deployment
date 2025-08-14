@@ -10,8 +10,8 @@ global:
   ingressURL: ""
   env:
     DATA_DIR: "/app/data/"
-    CENTRAL_SERVER_URL: "https://central.nocodebi.io/"
-    PRODUCT_CONSOLE_SERVER_URL: "https://local-product.nocodebi.io/"
+    CENTRAL_SERVER_URL: "https://central.nocodebi.io"
+    PRODUCT_CONSOLE_SERVER_URL: "https://local-product.nocodebi.io"
     APP_SERVER_URL: ""
     STAGE_ID: ""
     APP_ID: ""
