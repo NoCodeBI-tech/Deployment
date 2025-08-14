@@ -2,20 +2,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID }}-deployment
+  name: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID | lower }}-deployment
   namespace: {{ $.Values.global.appName }}
 spec:
   selector:
     matchLabels:
-      app: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID }}
+      app: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID | lower }}
   template:
     metadata:
       labels:
-        app: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID }}
+        app: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID | lower }}
     spec:
       serviceAccountName: {{ $.Values.global.appName }}-sa
       containers:
-        - name: {{ $service.name }}-{{ $.Values.global.env.INSTANCE_ID }}
+        - name: {{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID | lower }}
           image: "{{ $.Values.global.imageRegistry }}/{{ $service.image }}:{{$.Values.global.image.tag}}"
           env:
           {{- range $key, $value := $.Values.global.env }}
@@ -41,7 +41,7 @@ spec:
         {{- if $service.enableVolume }}
         - name: data-volume
           persistentVolumeClaim:
-            claimName: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID }}-pvc
+            claimName: {{ $.Values.global.appName }}-{{ $service.name }}-{{ substr 0 8 $.Values.global.env.INSTANCE_ID | lower }}-pvc
         {{- end }}
 ---
 {{- end }}
