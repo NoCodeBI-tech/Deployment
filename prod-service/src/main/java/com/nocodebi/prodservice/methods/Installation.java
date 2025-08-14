@@ -147,7 +147,7 @@ public class Installation {
                     Constant._NAMESPACE + context.getStageName() + context.getAppName(),
                     Constant._CREATE_NAMESPACE,
                     Constant._SET,
-                    Constant.GLOBAL_APPNAME + context.getStageName() + context.getAppName() + context.getInstanceId().toLowerCase().trim() +
+                    Constant.GLOBAL_APPNAME + context.getStageName() + context.getAppName() +
                             Constant.COMMA + Constant.GLOBAL_INGRESS_URL + String.format(Constant.UNFORMATTED_DOMAIN, context.getStageName(), context.getAppName()) +
                             Constant.COMMA + Constant.GLOBAL_USER_HOME + Utilities.getLinuxStyleDataPath() +
                             Constant.COMMA + Constant.GLOBAL_ENV_STAGE_ID + context.getStageId() +
