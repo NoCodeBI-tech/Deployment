@@ -8,7 +8,7 @@ spec:
   capacity:
     storage: {{ $service.volume.size }}
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   hostPath:
