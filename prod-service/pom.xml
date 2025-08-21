@@ -115,7 +115,7 @@
     </dependencies>
 
     <build>
-        <finalName>Prod-NoCodeBI-Service</finalName>
+        <finalName>nocodebi-service</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -140,6 +140,55 @@
                         </exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+
+            <!-- Spring Boot fat/executable JAR -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.3.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <!-- Optional: set explicitly if autodetect fails
+                <configuration>
+                  <mainClass>io.nocodebi.ServiceApplication</mainClass>
+                  <excludes>
+                    <exclude>
+                      <groupId>org.projectlombok</groupId>
+                      <artifactId>lombok</artifactId>
+                    </exclude>
+                  </excludes>
+                </configuration>
+                -->
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+
+                                <!-- First Copy -->
+                                <mkdir dir="D:/DevSpace/Deployment/ServiceJar/prod"/>
+                                <copy file="${project.build.directory}/${project.build.finalName}.jar"
+                                      tofile="D:/DevSpace/Deployment/ServiceJar/prod/${project.build.finalName}.jar"/>
+
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -109,7 +109,7 @@
     </dependencies>
 
     <build>
-        <finalName>NoCodeBI_Service</finalName>
+        <finalName>nocodebi-service</finalName>
 
         <plugins>
 
@@ -128,31 +128,54 @@
                 </configuration>
             </plugin>
 
-            <!-- This will copy all compile+runtime deps into target/lib -->
+            <!-- Spring Boot fat/executable JAR -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.3.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <!-- Optional: set explicitly if autodetect fails
+                <configuration>
+                  <mainClass>io.nocodebi.ServiceApplication</mainClass>
+                  <excludes>
+                    <exclude>
+                      <groupId>org.projectlombok</groupId>
+                      <artifactId>lombok</artifactId>
+                    </exclude>
+                  </excludes>
+                </configuration>
+                -->
+            </plugin>
 
-            <!--            <plugin>-->
-            <!--                <groupId>org.apache.maven.plugins</groupId>-->
-            <!--                <artifactId>maven-dependency-plugin</artifactId>-->
-            <!--                <version>3.5.0</version>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <id>copy-dependencies</id>-->
-            <!--                        <phase>package</phase>-->
-            <!--                        <goals>-->
-            <!--                            <goal>copy-dependencies</goal>-->
-            <!--                        </goals>-->
-            <!--                        <configuration>-->
-            <!--                            &lt;!&ndash; where to dump them &ndash;&gt;-->
-            <!--                            <outputDirectory>${project.build.directory}/lib</outputDirectory>-->
-            <!--                            &lt;!&ndash; include the project’s own shaded jar if you want &ndash;&gt;-->
-            <!--                            <includeProjectArtifacts>true</includeProjectArtifacts>-->
-            <!--                            &lt;!&ndash; you can filter by scope if you like &ndash;&gt;-->
-            <!--                            <includeScope>runtime</includeScope>-->
-            <!--                        </configuration>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--            </plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
 
+                                <!-- First Copy -->
+                                <mkdir dir="D:/DevSpace/Deployment/ServiceJar/local"/>
+                                <copy file="${project.build.directory}/${project.build.finalName}.jar"
+                                      tofile="D:/DevSpace/Deployment/ServiceJar/local/${project.build.finalName}.jar"/>
+
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
 
     </build>

@@ -1,3 +1,4 @@
 nocodebi-installer/NoCodeBI_Installer_Working_Backup.zip filter=lfs diff=lfs merge=lfs -text
 nocodebi-installer/output/nocodebi-installer.exe filter=lfs diff=lfs merge=lfs -text
 nocodebi-installer/service/NoCodeBI_Service.jar filter=lfs diff=lfs merge=lfs -text
+*.jar filter=lfs diff=lfs merge=lfs -text
