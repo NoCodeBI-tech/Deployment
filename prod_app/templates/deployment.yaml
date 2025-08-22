@@ -13,7 +13,7 @@ spec:
       labels:
         app: {{ $.Values.global.appName }}-{{ $service.name }}
       annotations:
-        redeploy-timestamp: "{{ now | quote }}"
+        redeploy-timestamp: "{{ now | unixEpoch }}"
     spec:
       serviceAccountName: {{ $.Values.global.appName }}-sa
       containers:
@@ -32,7 +32,7 @@ spec:
             - name: tls-certs
               mountPath: "/etc/tls"
               readOnly: true
-              {{- if $service.enableVolume }}
+            {{- if $service.enableVolume }}
             - name: data-volume
               mountPath: /app/data
             {{- end }}

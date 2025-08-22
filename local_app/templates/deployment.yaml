@@ -13,7 +13,7 @@ spec:
       labels:
         app: {{ $.Values.global.appName }}-{{ $service.name }}
       annotations:
-        redeploy-timestamp: "{{ now | quote }}"
+        redeploy-timestamp: "{{ now | unixEpoch }}"
     spec:
       serviceAccountName: {{ $.Values.global.appName }}-sa
       containers:
