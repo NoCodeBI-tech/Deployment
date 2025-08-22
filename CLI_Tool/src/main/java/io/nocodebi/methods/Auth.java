@@ -14,7 +14,8 @@ public class Auth {
     public static void login(CookieStoreManager cookieStoreManager) throws Exception {
 
         String hostname = "";
-        String os = System.getProperty("os.name");;
+        String os = System.getProperty("os.name");
+        ;
         String browser = "chrome";
 
         Scanner scanner = new Scanner(System.in);
@@ -42,9 +43,19 @@ public class Auth {
 
         }
 
-        String body = String.format("{ \"username\":\"%s\", \"password\":\"%s\", \"hostname\":\"%s\", \"os\":\"%s\" , \"browser\":\"%s\" }", username, password, hostname, os, browser);
+        String body = String.format("{ \"username\":\"%s\", \"password\":\"%s\", \"hostname\":\"%s\", \"os\":\"%s\", \"browser\":\"%s\" }", username, password, hostname, os, browser);
 
-        HttpResponse<String> response = Utilities.apiCall(cookieStoreManager, Constant.PRODUCT_CONSOLE, Constant.LOGIN, body);
+        HttpResponse<String> response = Utilities.apiCall(
+
+                cookieStoreManager,
+
+                Constant.PRODUCT_CONSOLE,
+
+                Constant.LOGIN,
+
+                body
+
+        );
 
         String cookiesString = Utilities.toJson(response.headers().allValues("set-cookie"));
 

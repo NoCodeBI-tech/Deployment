@@ -158,6 +158,11 @@
                                 <copy file="${project.build.directory}/${project.build.finalName}.jar"
                                       tofile="D:/DevSpace/Deployment/CliJar/${project.build.finalName}.jar"/>
 
+                                <!-- Second Copy -->
+                                <mkdir dir="D:/DevSpace/Deployment/nocodebi-new-installer/cli"/>
+                                <copy file="${project.build.directory}/${project.build.finalName}.jar"
+                                      tofile="D:/DevSpace/Deployment/nocodebi-new-installer/cli/${project.build.finalName}.jar"/>
+
                             </target>
                         </configuration>
                     </execution>

@@ -10,7 +10,6 @@ import io.nocodebi.utils.Utilities;
 import java.net.http.HttpResponse;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Scanner;
 
 public class App {
 
@@ -18,130 +17,109 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        String cmd = null;
-
         String command = null;
 
         try {
 
-            while (true) {
+            if (args.length == 0) {
+                System.out.println("Usage:  nocodebi <command>");
+                System.out.println();
+                System.out.println("These are common NoCodeBI commands used in various situations:");
+                System.out.println("  login             Authenticate to a NoCodeBI");
+                System.out.println("  logout            Log out from a NoCodeBI");
+                System.out.println("  install           Install Product Console");
+                return;
+            } else if (args.length == 1) {
 
-                Scanner sc = new Scanner(System.in);
+                command = args[0];
 
-                System.out.print("Enter CMD to Execute : ");
+                CookieStoreManager cookieStoreManager = new CookieStoreManager();
 
-                String line = sc.nextLine();
+                if ("login".equalsIgnoreCase(command)) {
 
-                args = line.split("\\s+");
+                    Auth.login(cookieStoreManager);
 
-                cmd = Arrays.toString(args);
-
-                if (args.length == 0) {
-                    System.out.println("Usage:  nocodebi <command>");
-                    System.out.println();
-                    System.out.println("These are common NoCodeBI commands used in various situations:");
-                    System.out.println("  login             Authenticate to a NoCodeBI");
-                    System.out.println("  logout            Log out from a NoCodeBI");
-                    System.out.println("  install           Install Product Console");
                     return;
-                } else if (args.length == 1) {
 
-                    System.out.println(cmd);
+                }
 
-                    command = args[0];
+                JwtUtil jwtUtil = new JwtUtil();
 
-                    CookieStoreManager cookieStoreManager = new CookieStoreManager();
+                Map<String, String> token = cookieStoreManager.loadCookies();
 
-                    if ("login".equalsIgnoreCase(command)) {
-                        ;
+                if (token == null) {
 
-                        Auth.login(cookieStoreManager);
+                    cookieStoreManager.clearCookies(true);
 
-                        return;
+                    System.out.println("Please Login First...");
 
-                    }
-
-                    JwtUtil jwtUtil = new JwtUtil();
-
-                    Map<String, String> token = cookieStoreManager.loadCookies();
-
-                    if (token == null) {
-
-                        cookieStoreManager.clearCookies(true);
-
-                        System.out.println("Please Login First...");
-
-                        return;
-
-                    } else {
-
-                        accessToken = token.get(Constant.ACCESSTOKEN);
-
-                        if (!jwtUtil.validateToken(accessToken)) {
-
-                            cookieStoreManager.clearCookies(true);
-
-                            System.out.println("Session Expired...");
-
-                            return;
-
-                        }
-
-                    }
-
-                    if ("logout".equalsIgnoreCase(command)) {
-
-                        Auth.logout(cookieStoreManager);
-
-                    } else if ("install".equalsIgnoreCase(command)) {
-
-                        String responseObj = Utilities.apiCall(cookieStoreManager,
-                                Constant.SERVICE,
-                                Constant.API_INSTALL_PRODUCT,
-                                Constant.EMPTY_JSON).body();
-
-                        String result = Utilities.toResponseObj(responseObj).getData().toString();
-
-                        System.out.println("Installation Status : " + result);
-
-                    } else if ("uninstall".equalsIgnoreCase(command)) {
-
-                        String responseObj = Utilities.apiCall(cookieStoreManager,
-                                Constant.SERVICE,
-                                Constant.API_UNINSTALL_PRODUCT,
-                                Constant.EMPTY_JSON).body();
-
-                        System.out.println(responseObj);
-
-                        String result = Utilities.toResponseObj(responseObj).getData().toString();
-
-                        System.out.println("Uninstallation Status : " + result);
-
-                    } else if ("test".equalsIgnoreCase(command)) {
-
-                        System.out.println("SHA Key >>> " + DeviceFingerprintService.generateDeviceFingerprint());
-
-                        HttpResponse<String> response = Utilities.apiCall(cookieStoreManager, Constant.PRODUCT_CONSOLE, Constant.TEST, "{}");
-
-                        System.out.println("Test >>> " + Utilities.toJson(response.body()));
-
-                    } else if ("exit".equalsIgnoreCase(command)) {
-
-                        System.out.println("Thank you for choosing NoCodeBI...");
-
-                        break;
-
-                    } else {
-
-                        System.out.println("Unknown command: " + command);
-
-                    }
+                    return;
 
                 } else {
 
-                    System.out.println("Unknown command: " + cmd);
+                    accessToken = token.get(Constant.ACCESSTOKEN);
+
+                    if (!jwtUtil.validateToken(accessToken)) {
+
+                        cookieStoreManager.clearCookies(true);
+
+                        System.out.println("Session Expired...");
+
+                        return;
+
+                    }
 
                 }
+
+                if ("logout".equalsIgnoreCase(command)) {
+
+                    Auth.logout(cookieStoreManager);
+
+                } else if ("install".equalsIgnoreCase(command)) {
+
+                    String responseObj = Utilities.apiCall(cookieStoreManager,
+                            Constant.SERVICE,
+                            Constant.API_INSTALL_PRODUCT,
+                            Constant.EMPTY_JSON).body();
+
+                    String result = Utilities.toResponseObj(responseObj).getData().toString();
+
+                    System.out.println("Installation Status : " + result);
+
+                } else if ("uninstall".equalsIgnoreCase(command)) {
+
+                    String responseObj = Utilities.apiCall(cookieStoreManager,
+                            Constant.SERVICE,
+                            Constant.API_UNINSTALL_PRODUCT,
+                            Constant.EMPTY_JSON).body();
+
+                    System.out.println(responseObj);
+
+                    String result = Utilities.toResponseObj(responseObj).getData().toString();
+
+                    System.out.println("Uninstallation Status : " + result);
+
+                } else if ("test".equalsIgnoreCase(command)) {
+
+                    System.out.println("SHA Key >>> " + DeviceFingerprintService.generateDeviceFingerprint());
+
+                    HttpResponse<String> response = Utilities.apiCall(cookieStoreManager, Constant.PRODUCT_CONSOLE, Constant.TEST, "{}");
+
+                    System.out.println("Test >>> " + Utilities.toJson(response.body()));
+
+                } else if ("exit".equalsIgnoreCase(command)) {
+
+                    System.out.println("Thank you for choosing NoCodeBI...");
+
+                } else {
+
+                    System.out.println("Unknown command: " + command);
+
+                }
+
+            } else {
+
+                System.out.println("Unknown command: " + Arrays.toString(args));
 
             }
 

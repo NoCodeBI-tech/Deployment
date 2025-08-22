@@ -17,6 +17,7 @@ spec:
       containers:
         - name: {{ $service.name }}
           image: "{{ $.Values.global.imageRegistry }}/{{ $service.image }}:{{$.Values.global.image.tag}}"
+          imagePullPolicy: Always
           env:
           {{- range $key, $value := $.Values.global.env }}
             - name: {{ $key }}
