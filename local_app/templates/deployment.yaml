@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app: {{ $.Values.global.appName }}-{{ $service.name }}
+      annotations:
+        redeploy-timestamp: "{{ now | quote }}"
     spec:
       serviceAccountName: {{ $.Values.global.appName }}-sa
       containers:
