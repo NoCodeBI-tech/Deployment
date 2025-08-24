@@ -125,7 +125,9 @@ services:
 - name: appserver-view
   image: appserver-view
   port: 10006
-  path: /view
+  path:
+    - /preview
+    - /page
   autoscaling:
     enabled: true
     minReplicas: 1

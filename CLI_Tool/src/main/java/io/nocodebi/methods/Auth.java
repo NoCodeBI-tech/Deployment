@@ -15,7 +15,6 @@ public class Auth {
 
         String hostname = "";
         String os = System.getProperty("os.name");
-        ;
         String browser = "chrome";
 
         Scanner scanner = new Scanner(System.in);

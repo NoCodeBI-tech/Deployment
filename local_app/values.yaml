@@ -144,7 +144,9 @@ services:
 - name: appserver-view
   image: appserver-view
   port: 10006
-  path: /view
+  path:
+    - /preview
+    - /page
   subDomain: local-
   replicaCount: 1
   autoscaling:

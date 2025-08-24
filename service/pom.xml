@@ -171,6 +171,11 @@
                                 <copy file="${project.build.directory}/${project.build.finalName}.jar"
                                       tofile="D:/DevSpace/Deployment/ServiceJar/local/${project.build.finalName}.jar"/>
 
+                                <!-- Second Copy -->
+                                <mkdir dir="D:/DevSpace/Deployment/nocodebi-installer/Build"/>
+                                <copy file="${project.build.directory}/${project.build.finalName}.jar"
+                                      tofile="D:/DevSpace/Deployment/nocodebi-installer/Build/${project.build.finalName}.jar"/>
+
                             </target>
                         </configuration>
                     </execution>
