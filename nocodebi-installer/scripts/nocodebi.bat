@@ -4,14 +4,14 @@ setlocal enabledelayedexpansion
 for %%I in ("%~dp0java_path.cfg") do set "CONFIG=%%~fI"
 
 REM Check if we have a stored Java path
-if exist "%CONFIG%" (
-    set /p JAVA_HOME=<"%CONFIG_FILE%"
-    set "JAVA_EXE=%JAVA_HOME%\bin\java.exe"
+@REM if exist "%CONFIG%" (
+@REM     set /p JAVA_HOME=<"%CONFIG_FILE%"
+@REM     set "JAVA_EXE=%JAVA_HOME%\bin\java.exe"
     
-    if exist "%JAVA_EXE%" (
-        goto :run_jar
-    )
-)
+@REM     if exist "%JAVA_EXE%" (
+@REM         goto :run_jar
+@REM     )
+@REM )
 
 REM If no stored path, find Java 17
 @REM echo Finding Java 17 installation...
