@@ -128,6 +128,7 @@ services:
   path:
     - /preview
     - /page
+    - /view
   autoscaling:
     enabled: true
     minReplicas: 1

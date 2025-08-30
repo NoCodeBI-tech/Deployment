@@ -147,6 +147,7 @@ services:
   path:
     - /preview
     - /page
+    - /view
   subDomain: local-
   replicaCount: 1
   autoscaling:
