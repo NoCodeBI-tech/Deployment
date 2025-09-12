@@ -12,6 +12,7 @@ spec:
     requests:
       storage: {{ $service.volume.size }}
   storageClassName: local-storage
+  volumeName: {{ $.Values.global.appName }}-{{ $service.name }}-pv
 ---
 {{- end }}
 {{- end }}
