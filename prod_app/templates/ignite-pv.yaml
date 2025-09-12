@@ -14,6 +14,9 @@ spec:
   hostPath:
     path: "/mnt/server_data/{{ $.Values.global.appName }}/{{ $service.name }}"
     type: DirectoryOrCreate
+  claimRef:
+    namespace: {{ $.Values.global.appName }}
+    name: {{ $.Values.global.appName }}-{{ $service.name }}-pvc
 ---
 {{- end }}
 {{- end }}
