@@ -32,7 +32,8 @@ services:
 - name: appserver-admin
   image: appserver-admin
   port: 10002
-  path: /
+  path:
+  - /
   subDomain: local-
   replicaCount: 1
   autoscaling:
@@ -48,7 +49,8 @@ services:
 - name: appserver-flow
   image: appserver-flow
   port: 10009
-  path: /flow
+  path:
+  - /flow
   subDomain: local-
   replicaCount: 1
   autoscaling:
@@ -61,10 +63,12 @@ services:
   volume:
     size: 10Gi
 
-- name: appserver-configuration
-  image: appserver-configuration
-  port: 10007
-  path: /config
+- name: appserver-hosted-database
+  image: appserver-hosted-db
+  port: 10004
+  path:
+  - /hostedDB
+  - /connector-server
   subDomain: local-
   replicaCount: 1
   autoscaling:
@@ -76,59 +80,12 @@ services:
   enableVolume: true
   volume:
     size: 10Gi
-
-- name: appserver-connector
-  image: appserver-connector
-  port: 10003
-  path: /connector-server
-  subDomain: local-
-  replicaCount: 1
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 5
-    targetCPUUtilizationPercentage: 70
-    targetMemoryUtilizationPercentage: 80
-  enableVolume: true
-  volume:
-    size: 10Gi
-
-# - name: appserver-hosted-database
-#   image: appserver-hosted-db
-#   port: 10004
-#   path: /hostedDB
-#   subDomain: local-
-#   replicaCount: 1
-#   autoscaling:
-#     enabled: false
-#     minReplicas: 1
-#     maxReplicas: 5
-#     targetCPUUtilizationPercentage: 70
-#     targetMemoryUtilizationPercentage: 80
-#   enableVolume: true
-#   volume:
-#     size: 10Gi
 
 - name: appserver-query
   image: appserver-query
   port: 10005
-  path: /query
-  subDomain: local-
-  replicaCount: 1
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 5
-    targetCPUUtilizationPercentage: 70
-    targetMemoryUtilizationPercentage: 80
-  enableVolume: true
-  volume:
-    size: 10Gi
-
-- name: appserver-security-provider
-  image: appserver-security
-  port: 10008
-  path: /security
+  path:
+  - /query
   subDomain: local-
   replicaCount: 1
   autoscaling:
@@ -145,9 +102,10 @@ services:
   image: appserver-view
   port: 10006
   path:
-    - /preview
-    - /page
-    - /view
+  - /preview
+  - /page
+  - /view
+  - /config
   subDomain: local-
   replicaCount: 1
   autoscaling:
@@ -159,3 +117,51 @@ services:
   enableVolume: true
   volume:
     size: 10Gi
+
+# - name: appserver-configuration
+#   image: appserver-configuration
+#   port: 10007
+#   path: /config
+#   subDomain: local-
+#   replicaCount: 1
+#   autoscaling:
+#     enabled: false
+#     minReplicas: 1
+#     maxReplicas: 5
+#     targetCPUUtilizationPercentage: 70
+#     targetMemoryUtilizationPercentage: 80
+#   enableVolume: true
+#   volume:
+#     size: 10Gi
+
+# - name: appserver-connector
+#   image: appserver-connector
+#   port: 10003
+#   path: /connector-server
+#   subDomain: local-
+#   replicaCount: 1
+#   autoscaling:
+#     enabled: false
+#     minReplicas: 1
+#     maxReplicas: 5
+#     targetCPUUtilizationPercentage: 70
+#     targetMemoryUtilizationPercentage: 80
+#   enableVolume: true
+#   volume:
+#     size: 10G
+
+# - name: appserver-security-provider
+#   image: appserver-security
+#   port: 10008
+#   path: /security
+#   subDomain: local-
+#   replicaCount: 1
+#   autoscaling:
+#     enabled: false
+#     minReplicas: 1
+#     maxReplicas: 5
+#     targetCPUUtilizationPercentage: 70
+#     targetMemoryUtilizationPercentage: 80
+#   enableVolume: true
+#   volume:
+#     size: 10Gi
