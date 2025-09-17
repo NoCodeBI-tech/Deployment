@@ -1,0 +1,46 @@
+{{- range $service := .Values.services }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $.Values.global.appName }}-{{ $service.name }}-deployment
+  namespace: {{ $.Values.global.appName }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ $.Values.global.appName }}-{{ $service.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $.Values.global.appName }}-{{ $service.name }}
+      annotations:
+        redeploy-timestamp: "{{ now | unixEpoch }}"
+    spec:
+      serviceAccountName: {{ $.Values.global.appName }}-sa
+      containers:
+        - name: {{ $service.name }}
+          image: "{{ $.Values.global.imageRegistry }}/{{ $service.image }}:{{$.Values.global.image.tag}}"
+          imagePullPolicy: Always
+          env:
+          {{- range $key, $value := $.Values.global.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+          {{- end }}
+          ports:
+            - name: port
+              containerPort: {{ $service.port }}
+          volumeMounts:
+            - name: tls-certs
+              mountPath: "/etc/tls"
+              readOnly: true
+            - name: data-volume
+              mountPath: /app/data
+      restartPolicy: Always
+      volumes:
+        - name: tls-certs
+          secret:
+            secretName: wildcard-tls-secret
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: {{ $.Values.global.appName }}-pvc
+---
+{{- end }}

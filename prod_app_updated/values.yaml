@@ -1,0 +1,89 @@
+global:
+  imageRegistry: "docker.io/nocodebi"
+  image:
+    tag: "latest"
+  ingress:
+    className: "traefik"
+    domain: nocodebi.io
+  appName: app
+  userHome: ""
+  ingressURL: ""
+  env:
+    DATA_DIR: "/app/data/"
+    CENTRAL_SERVER_URL: "https://central.nocodebi.io"
+    PRODUCT_CONSOLE_SERVER_URL: "https://product.nocodebi.io"
+    APP_SERVER_URL: ""
+    STAGE_ID: ""
+    APP_ID: ""
+    VERSION_ID: ""
+    USER_ID: ""
+    PREMISES_SHA: ""
+    CORE_JAR_URL: ""
+    M2_ZIP_URL: ""
+    APP_DATA_PATH: "/app/data/"
+
+services:
+
+- name: appserver-admin
+  image: appserver-admin
+  port: 10002
+  path:
+  - /
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+
+- name: appserver-flow
+  image: appserver-flow
+  port: 10009
+  path:
+  - /flow
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+
+- name: appserver-hosted-database
+  image: appserver-hosted-db
+  port: 10004
+  path:
+  - /hostedDB
+  - /connector-server
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+
+- name: appserver-query
+  image: appserver-query
+  port: 10005
+  path:
+  - /query
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+
+- name: appserver-view
+  image: appserver-view
+  port: 10006
+  path:
+  - /preview
+  - /page
+  - /view
+  - /config
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80

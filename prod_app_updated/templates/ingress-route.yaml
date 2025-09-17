@@ -1,0 +1,25 @@
+{{- range $service := .Values.services }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ $.Values.global.appName }}-{{ $service.name }}-ingressroute
+  namespace: {{ $.Values.global.appName }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  {{- range $p := $service.path }}
+    - match: Host(`{{ $.Values.global.ingressURL }}`) && PathPrefix(`{{ $p }}`)
+      kind: Rule
+      services:
+        - name: {{ $.Values.global.appName }}-{{ $service.name }}-service
+          port: 80
+  {{- end }}
+  tls:
+    secretName: wildcard-tls-secret
+    domains:
+      - main: "{{ $.Values.global.ingress.domain }}"
+        sans:
+          - "*.{{ $.Values.global.ingress.domain }}"
+---
+{{- end }}
