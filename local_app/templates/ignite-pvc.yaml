@@ -1,18 +1,14 @@
-{{- range $service := .Values.services }}
-{{- if $service.enableVolume }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ $.Values.global.appName }}-{{ $service.name }}-pvc
+  name: {{ $.Values.global.appName }}-pvc
   namespace: {{ $.Values.global.appName }}
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
-      storage: {{ $service.volume.size }}
-  volumeName: {{ $.Values.global.appName }}-{{ $service.name }}-pv
+      storage: 30Gi
+  volumeName: {{ $.Values.global.appName }}-pv
   storageClassName: manual
 ---
-{{- end }}
-{{- end }}

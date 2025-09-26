@@ -1,5 +1,4 @@
 {{- range $service := .Values.services }}
-# {{- if eq $service.name "appserver-view" }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
@@ -23,5 +22,4 @@ spec:
         sans:
           - "*.{{ $.Values.global.ingress.domain }}"
 ---
-# {{- end }}
 {{- end }}

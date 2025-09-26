@@ -1,25 +1,21 @@
-{{- range $service := .Values.services }}
-{{- if $service.enableVolume }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ $.Values.global.appName }}-{{ $service.name }}-pv
+  name: {{ $.Values.global.appName }}-pv
 spec:
   capacity:
-    storage: {{ $service.volume.size }}
+    storage: 30Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: manual
   hostPath:
-    path: {{ $.Values.global.userHome }}/data/{{ $.Values.global.appName }}/{{ $service.name }}
+    path: {{ $.Values.global.userHome }}/data/{{ $.Values.global.appName }}
     type: DirectoryOrCreate
   claimRef:
     namespace: {{ $.Values.global.appName }}
-    name: {{ $.Values.global.appName }}-{{ $service.name }}-pvc
+    name: {{ $.Values.global.appName }}-pvc
 ---
-{{- end }}
-{{- end }}
 
 # `C:\Users\admin\data`
 # `/c/Users/admin/data`
