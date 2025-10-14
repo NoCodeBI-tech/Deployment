@@ -8,8 +8,14 @@ spec:
   selector:
     app: {{ $.Values.global.appName }}-{{ $service.name }}
   ports:
+  {{- if eq $service.name "server-postgres" }}
+  - name: postgres
+    port: {{ $service.port }}
+    targetPort: {{ $service.port }}
+  {{- else }}
   - protocol: TCP
     port: 80
     targetPort: {{ $service.port }}
+  {{- end }}
 ---
 {{- end }}

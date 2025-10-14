@@ -1,4 +1,5 @@
 {{- range $service := .Values.services }}
+{{- if not (eq $service.name "server-postgres") }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
@@ -22,4 +23,5 @@ spec:
         sans:
           - "*.{{ $.Values.global.ingress.domain }}"
 ---
+{{- end }}
 {{- end }}

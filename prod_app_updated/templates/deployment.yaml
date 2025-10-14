@@ -16,14 +16,38 @@ spec:
         redeploy-timestamp: "{{ now | unixEpoch }}"
     spec:
       serviceAccountName: {{ $.Values.global.appName }}-sa
+      {{- if eq $service.name "server-postgres" }}
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      {{- end }}
       containers:
         - name: {{ $service.name }}
-          image: "{{ $.Values.global.imageRegistry }}/{{ $service.image }}:{{$.Values.global.image.tag}}"
+          {{- if eq $service.name "server-postgres" }}
+          image: postgres:15
+          imagePullPolicy: IfNotPresent
+          {{- else }}
+          image: {{ $.Values.global.imageRegistry }}/{{ $service.image }}:{{ $.Values.global.image.tag }}
           imagePullPolicy: Always
+          {{- end }}
           env:
+          {{- if eq $service.name "server-postgres" }}
+            - name: POSTGRES_DB
+              value: "config"
+            - name: POSTGRES_USER
+              value: "nocodebi"
+            - name: POSTGRES_PASSWORD
+              value: "NoCodeBI@2025"
+            - name: PGDATA
+              value: "/var/lib/postgresql/data"
+          {{- else }}
           {{- range $key, $value := $.Values.global.env }}
             - name: {{ $key }}
               value: "{{ $value }}"
+          {{- end }}
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://{{ $.Values.global.appName }}-server-postgres-service.{{ $.Values.global.appName }}.svc.cluster.local:5432/config"
           {{- end }}
           ports:
             - name: port
@@ -32,15 +56,26 @@ spec:
             - name: tls-certs
               mountPath: "/etc/tls"
               readOnly: true
+            {{- if eq $service.name "server-postgres" }}
+            - name: data-volume
+              mountPath: /var/lib/postgresql/data
+            {{- else }}
             - name: data-volume
               mountPath: /app/data
+            {{- end }}
       restartPolicy: Always
       volumes:
         - name: tls-certs
           secret:
             secretName: wildcard-tls-secret
+        {{- if eq $service.name "server-postgres" }}
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: {{ $.Values.global.appName }}-server-postgres-pvc
+        {{- else }}
         - name: data-volume
           persistentVolumeClaim:
             claimName: {{ $.Values.global.appName }}-pvc
+        {{- end }}
 ---
 {{- end }}
