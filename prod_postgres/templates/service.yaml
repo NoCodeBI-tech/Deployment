@@ -1,0 +1,15 @@
+{{- range $service := .Values.services }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $.Values.global.appName }}-{{ $service.name }}-service
+  namespace: {{ $.Values.global.appName }}
+spec:
+  selector:
+    app: {{ $.Values.global.appName }}-{{ $service.name }}
+  ports:
+  - name: postgres
+    port: {{ $service.port }}
+    targetPort: {{ $service.port }}
+---
+{{- end }}

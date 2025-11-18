@@ -91,9 +91,6 @@ public class Constant {
     public static final String DOMAIN = ".nocodebi.io";
     public static final String UNFORMATTED_HTTPS_DOMAIN = "https://%s-%s.nocodebi.io";
     public static final String UNFORMATTED_DOMAIN = "%s-%s.nocodebi.io";
-    public static String OBJECT_RETRIEVE_SUCCESSFULLY = "OBJECT_RETRIEVE_SUCCESSFULLY";
-    public static String OBJECT_CREATED_SUCCESSFULLY = "OBJECT_CREATED_SUCCESSFULLY";
-    public static String OBJECT_UPDATED_SUCCESSFULLY = "OBJECT_UPDATED_SUCCESSFULLY";
-    public static String OBJECT_DELETED_SUCCESSFULLY = "OBJECT_DELETED_SUCCESSFULLY";
+    public static final String ANONYMOUS_USER = "Anonymous User";
 
 }

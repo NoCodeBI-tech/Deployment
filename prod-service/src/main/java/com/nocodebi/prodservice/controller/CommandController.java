@@ -3,7 +3,6 @@ package com.nocodebi.prodservice.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.nocodebi.prodservice.constant.Constant;
 import com.nocodebi.prodservice.methods.Installation;
 import com.nocodebi.prodservice.model.*;
 import com.nocodebi.prodservice.utils.Utilities;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,9 +40,9 @@ public class CommandController {
         if (!Utilities.validateRequest(httpServletRequest)) {
 
             response = new Response(
-                    Constant.UNAUTHORISED,
+                    "Unauthorized access. Please provide valid authentication credentials.",
                     null,
-                    Constant.UNAUTHORISED,
+                    null,
                     transaction);
 
         } else {
@@ -53,16 +51,16 @@ public class CommandController {
 
             if (context != null) {
 
-                response = new Response(Constant.SUCCESS,
+                response = new Response(null,
                         context,
-                        Constant.OBJECT_CREATED_SUCCESSFULLY,
+                        "Application created successfully",
                         transaction);
 
             } else {
 
-                response = new Response(Constant.ERROR,
+                response = new Response("Failed to create application. Please check the logs for more details.",
                         null,
-                        Constant.ERROR,
+                        null,
                         transaction);
 
             }
@@ -87,9 +85,9 @@ public class CommandController {
         if (!Utilities.validateRequest(httpServletRequest)) {
 
             response = new Response(
-                    Constant.UNAUTHORISED,
+                    "Unauthorized access. Please provide valid authentication credentials.",
                     null,
-                    Constant.UNAUTHORISED,
+                    null,
                     transaction);
 
         } else {
@@ -98,16 +96,16 @@ public class CommandController {
 
             if (context != null) {
 
-                response = new Response(Constant.SUCCESS,
+                response = new Response(null,
                         context,
-                        Constant.OBJECT_DELETED_SUCCESSFULLY,
+                        "Application deleted successfully",
                         transaction);
 
             } else {
 
-                response = new Response(Constant.ERROR,
+                response = new Response("Failed to delete application. Please check the logs for more details.",
                         null,
-                        Constant.ERROR,
+                        null,
                         transaction);
 
             }
@@ -136,9 +134,9 @@ public class CommandController {
         if (!Utilities.validateRequest(httpServletRequest)) {
 
             response = new Response(
-                    Constant.UNAUTHORISED,
+                    "Unauthorized access. Please provide valid authentication credentials.",
                     null,
-                    Constant.UNAUTHORISED,
+                    null,
                     transaction);
 
         } else {
@@ -147,16 +145,16 @@ public class CommandController {
 
             if (context != null) {
 
-                response = new Response(Constant.SUCCESS,
+                response = new Response(null,
                         context,
-                        Constant.OBJECT_CREATED_SUCCESSFULLY,
+                        "Hosted database created successfully",
                         transaction);
 
             } else {
 
-                response = new Response(Constant.ERROR,
+                response = new Response("Failed to create hosted database. Please check the logs for more details.",
                         null,
-                        Constant.ERROR,
+                        null,
                         transaction);
 
             }
@@ -181,9 +179,9 @@ public class CommandController {
         if (!Utilities.validateRequest(httpServletRequest)) {
 
             response = new Response(
-                    Constant.UNAUTHORISED,
+                    "Unauthorized access. Please provide valid authentication credentials.",
                     null,
-                    Constant.UNAUTHORISED,
+                    null,
                     transaction);
 
         } else {
@@ -192,16 +190,16 @@ public class CommandController {
 
             if (context != null) {
 
-                response = new Response(Constant.SUCCESS,
+                response = new Response(null,
                         context,
-                        Constant.OBJECT_DELETED_SUCCESSFULLY,
+                        "Hosted database deleted successfully",
                         transaction);
 
             } else {
 
-                response = new Response(Constant.ERROR,
+                response = new Response("Failed to delete hosted database. Please check the logs for more details.",
                         null,
-                        Constant.ERROR,
+                        null,
                         transaction);
 
             }
@@ -236,9 +234,9 @@ public class CommandController {
         if (!Utilities.validateRequest(httpServletRequest)) {
 
             response = new Response(
-                    Constant.UNAUTHORISED,
+                    "Unauthorized access. Please provide valid authentication credentials.",
                     null,
-                    Constant.UNAUTHORISED,
+                    null,
                     transaction);
 
         } else {
@@ -277,16 +275,16 @@ public class CommandController {
 
                 });
 
-                response = new Response(Constant.SUCCESS,
+                response = new Response(null,
                         usages,
-                        Constant.OBJECT_RETRIEVE_SUCCESSFULLY,
+                        "Resource usage retrieved successfully",
                         transaction);
 
             } else {
 
-                response = new Response(Constant.ERROR,
+                response = new Response("Failed to retrieve resource usage. Invalid context provided.",
                         null,
-                        Constant.ERROR,
+                        null,
                         transaction);
 
             }
@@ -312,9 +310,9 @@ public class CommandController {
         if (!Utilities.validateRequest(httpServletRequest)) {
 
             response = new Response(
-                    Constant.UNAUTHORISED,
-                    Collections.emptyList(),
-                    Constant.UNAUTHORISED,
+                    "Unauthorized access. Please provide valid authentication credentials.",
+                    null,
+                    null,
                     transaction);
 
         } else {
@@ -323,16 +321,16 @@ public class CommandController {
 
                 List<PodSummary> summary = Installation.getPodStatusAsJson(context.getStageName() + context.getAppName(), null);
 
-                response = new Response(Constant.SUCCESS,
+                response = new Response(null,
                         summary,
-                        Constant.OBJECT_RETRIEVE_SUCCESSFULLY,
+                        "Build status retrieved successfully",
                         transaction);
 
             } else {
 
-                response = new Response(Constant.ERROR,
-                        Collections.emptyList(),
-                        Constant.ERROR,
+                response = new Response("Failed to retrieve build status. Invalid context provided.",
+                        null,
+                        null,
                         transaction);
 
             }
@@ -361,9 +359,9 @@ public class CommandController {
         if (!Utilities.validateRequest(httpServletRequest)) {
 
             response = new Response(
-                    Constant.UNAUTHORISED,
+                    "Unauthorized access. Please provide valid authentication credentials.",
                     null,
-                    Constant.UNAUTHORISED,
+                    null,
                     transaction);
 
         } else {
@@ -382,16 +380,16 @@ public class CommandController {
 
                 }
 
-                response = new Response(Constant.SUCCESS,
+                response = new Response(null,
                         status ? context : null,
-                        Constant.OBJECT_RETRIEVE_SUCCESSFULLY,
+                        "Instance action completed successfully",
                         transaction);
 
             } else {
 
-                response = new Response(Constant.ERROR,
+                response = new Response("Failed to perform instance action. Invalid context provided.",
                         null,
-                        Constant.ERROR,
+                        null,
                         transaction);
 
             }
@@ -420,9 +418,9 @@ public class CommandController {
         if (!Utilities.validateRequest(httpServletRequest)) {
 
             response = new Response(
-                    Constant.UNAUTHORISED,
+                    "Unauthorized access. Please provide valid authentication credentials.",
                     null,
-                    Constant.UNAUTHORISED,
+                    null,
                     transaction);
 
         } else {
@@ -437,9 +435,9 @@ public class CommandController {
                             null,
                             1);
 
-                    response = new Response(Constant.SUCCESS,
+                    response = new Response(null,
                             context,
-                            Constant.OBJECT_RETRIEVE_SUCCESSFULLY,
+                            "Stage started successfully",
                             transaction);
 
                 } else if (action.equalsIgnoreCase("stop")) {
@@ -448,27 +446,27 @@ public class CommandController {
                             null,
                             0);
 
-                    response = new Response(Constant.SUCCESS,
+                    response = new Response(null,
                             context,
-                            Constant.OBJECT_RETRIEVE_SUCCESSFULLY,
+                            "Stage stopped successfully",
                             transaction);
 
                 } else if (action.equalsIgnoreCase("delete")) {
 
                     context = Installation.uninstallApplication(context);
 
-                    response = new Response(Constant.SUCCESS,
+                    response = new Response(null,
                             context,
-                            Constant.OBJECT_RETRIEVE_SUCCESSFULLY,
+                            "Stage deleted successfully",
                             transaction);
 
                 }
 
             } else {
 
-                response = new Response(Constant.ERROR,
+                response = new Response("Failed to perform stage action. Invalid context provided.",
                         null,
-                        Constant.ERROR,
+                        null,
                         transaction);
 
             }

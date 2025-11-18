@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ $.Values.global.appName }}-server-postgres-pv
+spec:
+  capacity:
+    storage: 30Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  hostPath:
+    path: "/mnt/server_data/{{ $.Values.global.appName }}/database"
+    type: DirectoryOrCreate
+  claimRef:
+    namespace: {{ $.Values.global.appName }}
+    name: {{ $.Values.global.appName }}-server-postgres-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $.Values.global.appName }}-server-postgres-pvc
+  namespace: {{ $.Values.global.appName }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 30Gi
+  storageClassName: local-storage
+  volumeName: {{ $.Values.global.appName }}-server-postgres-pv
+---

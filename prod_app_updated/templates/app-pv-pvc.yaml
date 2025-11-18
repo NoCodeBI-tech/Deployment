@@ -16,3 +16,17 @@ spec:
     namespace: {{ $.Values.global.appName }}
     name: {{ $.Values.global.appName }}-pvc
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $.Values.global.appName }}-pvc
+  namespace: {{ $.Values.global.appName }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 30Gi
+  storageClassName: local-storage
+  volumeName: {{ $.Values.global.appName }}-pv
+---

@@ -37,13 +37,13 @@ public class Installation {
 
             String premisesSHA = DeviceFingerprintService.generateDeviceFingerprint();
 
-            if (context.getPremiseSHA() != null
-                    && !context.getPremiseSHA().isEmpty()
-                    && !premisesSHA.equals(context.getPremiseSHA())) {
-
-                return null;
-
-            }
+//            if (context.getPremiseSHA() != null
+//                    && !context.getPremiseSHA().isEmpty()
+//                    && !premisesSHA.equals(context.getPremiseSHA())) {
+//
+//                return null;
+//
+//            }
 
             List<String> command = new ArrayList<>(List.of(
                     Constant.HELM,
