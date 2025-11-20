@@ -76,6 +76,7 @@ services:
   - /page
   - /view
   - /config
+  - /workflow
   autoscaling:
     enabled: true
     minReplicas: 1
