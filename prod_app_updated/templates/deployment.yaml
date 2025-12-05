@@ -24,8 +24,8 @@ spec:
       {{- end }}
       containers:
         - name: {{ $service.name }}
-          image: {{- if or (eq $service.name "server-postgres") (eq $service.name "openfga") }}{{ $service.image }}{{- else }}{{ $.Values.global.imageRegistry }}/{{ $service.image }}:{{ $.Values.global.image.tag }}{{- end }}
-          imagePullPolicy: {{- if or (eq $service.name "server-postgres") (eq $service.name "openfga") }}IfNotPresent{{- else }}Always{{- end }}
+          image: {{ if or (eq $service.name "server-postgres") (eq $service.name "openfga") }}{{ $service.image }}{{ else }}{{ $.Values.global.imageRegistry }}/{{ $service.image }}:{{ $.Values.global.image.tag }}{{ end }}
+          imagePullPolicy: {{ if or (eq $service.name "server-postgres") (eq $service.name "openfga") }}IfNotPresent{{ else }}Always{{ end }}
           {{- if eq $service.name "openfga" }}
           args: ["run"]
           {{- end }}
