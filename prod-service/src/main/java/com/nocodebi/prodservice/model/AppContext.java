@@ -36,7 +36,7 @@ public class AppContext {
 
     private String timestamp;
 
-    private String instanceId;
+    private String databaseId;
 
     public AppContext() {
 
@@ -74,7 +74,7 @@ public class AppContext {
 
         this.timestamp = String.valueOf(System.currentTimeMillis());
 
-        this.instanceId = "";
+        this.databaseId = "";
 
     }
 
@@ -258,12 +258,12 @@ public class AppContext {
 
     }
 
-    public String getInstanceId() {
-        return instanceId;
+    public String getDatabaseId() {
+        return databaseId;
     }
 
-    public void setInstanceId(String instanceId) {
-        this.instanceId = instanceId;
+    public void setDatabaseId(String databaseId) {
+        this.databaseId = databaseId;
     }
-    
+
 }

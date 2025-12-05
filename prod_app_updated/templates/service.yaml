@@ -12,6 +12,10 @@ spec:
   - name: postgres
     port: {{ $service.port }}
     targetPort: {{ $service.port }}
+  {{- else if eq $service.name "openfga" }}
+  - name: openfga
+    port: {{ $service.port }}
+    targetPort: {{ $service.port }}
   {{- else }}
   - protocol: TCP
     port: 80

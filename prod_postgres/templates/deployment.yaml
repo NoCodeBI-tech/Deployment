@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $.Values.global.appName }}-{{ $service.name }}-deployment
-  namespace: {{ $.Values.global.appName }}
+  namespace: {{ $.Values.global.namespace }}
 spec:
   selector:
     matchLabels:
@@ -15,7 +15,7 @@ spec:
       annotations:
         redeploy-timestamp: "{{ now | unixEpoch }}"
     spec:
-      serviceAccountName: {{ $.Values.global.appName }}-sa
+      serviceAccountName: {{ $.Values.global.app }}-sa
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
@@ -25,7 +25,7 @@ spec:
           image: postgres:15
           imagePullPolicy: IfNotPresent
           env:
-          {{- range $key, $value := $service.env }}
+          {{- range $key, $value := $.Values.global.env }}
             - name: {{ $key }}
               value: "{{ $value }}"
           {{- end }}
@@ -45,6 +45,6 @@ spec:
             secretName: wildcard-tls-secret
         - name: data-volume
           persistentVolumeClaim:
-            claimName: {{ $.Values.global.appName }}-pvc
+            claimName: {{ $.Values.global.appName }}-server-postgres-pvc
 ---
 {{- end }}

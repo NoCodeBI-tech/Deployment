@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ $.Values.global.appName }}-{{ $service.name }}-service
-  namespace: {{ $.Values.global.appName }}
+  namespace: {{ $.Values.global.namespace }}
 spec:
   selector:
     app: {{ $.Values.global.appName }}-{{ $service.name }}

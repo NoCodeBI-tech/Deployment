@@ -24,13 +24,9 @@ spec:
       {{- end }}
       containers:
         - name: {{ $service.name }}
-          {{- if eq $service.name "server-postgres" }}
-          image: postgres:15
-          imagePullPolicy: IfNotPresent
-          {{- else }}
-          image: {{ $.Values.global.imageRegistry }}/{{ $service.image }}:{{ $.Values.global.image.tag }}
-          imagePullPolicy: Always
-          {{- end }}
+          image: {{- if or (eq $service.name "server-postgres") (eq $service.name "openfga") }}{{ $service.image }}{{- else }}{{ $.Values.global.imageRegistry }}/{{ $service.image }}:{{ $.Values.global.image.tag }}{{- end }}
+          imagePullPolicy: {{- if or (eq $service.name "server-postgres") (eq $service.name "openfga") }}IfNotPresent{{- else }}Always{{- end }}
+          {{- if eq $service.name "openfga" }}args: ["run"]{{- end }}
           env:
           {{- if eq $service.name "server-postgres" }}
             - name: POSTGRES_DB
@@ -41,6 +37,15 @@ spec:
               value: "NoCodeBI@2025"
             - name: PGDATA
               value: "/var/lib/postgresql/data"
+          {{- else if eq $service.name "openfga" }}
+            - name: OPENFGA_DATASTORE_ENGINE
+              value: "postgres"
+            - name: OPENFGA_DATASTORE_URI
+              value: "postgres://nocodebi:NoCodeBI%402025@{{ $.Values.global.appName }}-server-postgres-service.{{ $.Values.global.appName }}.svc.cluster.local:5432/config?sslmode=disable"
+            - name: OPENFGA_LOG_LEVEL
+              value: "info"
+            - name: OPENFGA_AUTHN_METHOD
+              value: "none"
           {{- else }}
           {{- range $key, $value := $.Values.global.env }}
             - name: {{ $key }}
@@ -48,10 +53,13 @@ spec:
           {{- end }}
             - name: SPRING_DATASOURCE_URL
               value: "jdbc:postgresql://{{ $.Values.global.appName }}-server-postgres-service.{{ $.Values.global.appName }}.svc.cluster.local:5432/config"
+            - name: OPENFGA_SERVER_URL
+              value: "http://{{ $.Values.global.appName }}-openfga-service.{{ $.Values.global.appName }}.svc.cluster.local:8080"
           {{- end }}
           ports:
             - name: port
               containerPort: {{ $service.port }}
+          {{- if not (eq $service.name "openfga") }}
           volumeMounts:
             - name: tls-certs
               mountPath: "/etc/tls"
@@ -63,7 +71,9 @@ spec:
             - name: data-volume
               mountPath: /app/data
             {{- end }}
+          {{- end }}
       restartPolicy: Always
+      {{- if not (eq $service.name "openfga") }}
       volumes:
         - name: tls-certs
           secret:
@@ -77,5 +87,6 @@ spec:
           persistentVolumeClaim:
             claimName: {{ $.Values.global.appName }}-pvc
         {{- end }}
+      {{- end }}
 ---
 {{- end }}

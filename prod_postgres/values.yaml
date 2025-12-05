@@ -6,8 +6,15 @@ global:
     className: "traefik"
     domain: nocodebi.io
   appName: app
+  app: app
+  namespace: ""
   userHome: ""
   ingressURL: ""
+  env:
+    POSTGRES_DB: ""
+    POSTGRES_USER: "nocodebi"
+    POSTGRES_PASSWORD: "NoCodeBI@2025"
+    PGDATA: "/var/lib/postgresql/data"
 
 services:
 
@@ -20,12 +27,3 @@ services:
     maxReplicas: 5
     targetCPUUtilizationPercentage: 70
     targetMemoryUtilizationPercentage: 80
-  env:
-  - name: POSTGRES_DB
-    value: "config"
-  - name: POSTGRES_USER
-    value: "nocodebi"
-  - name: POSTGRES_PASSWORD
-    value: "NoCodeBI@2025"
-  - name: PGDATA
-    value: "/var/lib/postgresql/data"

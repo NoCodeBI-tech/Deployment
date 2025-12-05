@@ -49,10 +49,12 @@ public class Constant {
     public static final String GRAP = "| grep";
     public static final String DOUBLEAND = "&&";
     public static final String GLOBAL_APPNAME = "global.appName=";
+    public static final String GLOBAL_APP = "global.app=";
     public static final String GLOBAL_TLS_CRT = "global.tls.crt=";
     public static final String GLOBAL_TLS_KEY = "global.tls.key=";
     public static final String GLOBAL_INGRESS_URL = "global.ingressURL=";
     public static final String GLOBAL_USER_HOME = "global.userHome=";
+    public static final String GLOBAL_NAMESPACE = "global.namespace=";
     public static final String GLOBAL_ENV_APP_CHART_URL = "global.env.CHART_REPO_URL=";
     public static final String GLOBAL_ENV_STAGE_ID = "global.env.STAGE_ID=";
     public static final String GLOBAL_ENV_APP_ID = "global.env.APP_ID=";
@@ -66,12 +68,17 @@ public class Constant {
     public static final String GLOBAL_ENV_M2_ZIP_URL = "global.env.M2_ZIP_URL=";
     public static final String GLOBAL_ENV_APP_DATA_PATH = "global.env.APP_DATA_PATH=";
     public static final String GLOBAL_ENV_INSTANCE_ID = "global.env.INSTANCE_ID=";
+    public static final String GLOBAL_ENV_POSTGRES_DB = "global.env.POSTGRES_DB=";
+    public static final String GLOBAL_ENV_POSTGRES_USER = "global.env.POSTGRES_USER=";
+    public static final String GLOBAL_ENV_POSTGRES_PASSWORD = "global.env.POSTGRES_PASSWORD=";
+    public static final String GLOBAL_ENV_PGDATA = "global.env.PGDATA=";
     public static final String GLOBAL_IMAGE_TAG_LATEST = "global.image.tag=latest";
     public static final String GLOBAL_IMAGE_TAG = "global.image.tag=";
     public static final String SEMICOLON = ";";
     // Content Urls
     public static final String APP_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/prod_app.tgz";
-    public static final String HOSTED_DATABASE_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/prod_hosted_database_server.tgz";
+    //    public static final String HOSTED_DATABASE_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/prod_hosted_database_server.tgz";
+    public static final String HOSTED_DATABASE_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/prod_postgres.tgz";
     public static final String PRODUCT_CONSOLE_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/local_product.tgz";
     public static final String TRAEFIK_URL = "https://raw.githubusercontent.com/NoCodeBI-tech/Deployment/main/traefik/traefik.yml";
     public static final String TRAEFIK_CRD_CMD = "https://raw.githubusercontent.com/traefik/traefik/v2.10/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml";

@@ -135,33 +135,26 @@ public class Installation {
         }
     }
 
-    public static AppContext buildHostedDB(AppContext context) {
+    public static AppContext buildHostedDB(AppContext context, String dbName) {
         try {
 
             List<String> command = new ArrayList<>(List.of(
                     Constant.HELM,
                     Constant.UPGRADE,
                     Constant._INSTALL,
-                    context.getStageName() + context.getAppName() + context.getInstanceId().toLowerCase().trim(),
+                    context.getStageName() + context.getAppName() + dbName,
                     Constant.HOSTED_DATABASE_URL,
                     Constant._NAMESPACE + context.getStageName() + context.getAppName(),
                     Constant._CREATE_NAMESPACE,
                     Constant._SET,
-                    Constant.GLOBAL_APPNAME + context.getStageName() + context.getAppName() +
-                            Constant.COMMA + Constant.GLOBAL_INGRESS_URL + String.format(Constant.UNFORMATTED_DOMAIN, context.getStageName(), context.getAppName()) +
+                    Constant.GLOBAL_APPNAME + context.getStageName() + context.getAppName() + dbName +
+                            Constant.COMMA + Constant.GLOBAL_APP + context.getStageName() + context.getAppName() +
                             Constant.COMMA + Constant.GLOBAL_USER_HOME + Utilities.getLinuxStyleDataPath() +
-                            Constant.COMMA + Constant.GLOBAL_ENV_STAGE_ID + context.getStageId() +
-                            Constant.COMMA + Constant.GLOBAL_ENV_APP_ID + context.getAppId() +
-                            Constant.COMMA + Constant.GLOBAL_ENV_VERSION_ID + context.getVersionId() +
-                            Constant.COMMA + Constant.GLOBAL_ENV_USER_ID + context.getUserId() +
-                            Constant.COMMA + Constant.GLOBAL_ENV_CENTRAL_SERVER_URL + context.getCentralURL() +
-                            Constant.COMMA + Constant.GLOBAL_ENV_PRODUCT_CONSOLE_SERVER_URL + context.getProductURL() +
-                            Constant.COMMA + Constant.GLOBAL_ENV_APP_SERVER_URL + context.getAppURL() +
-                            Constant.COMMA + Constant.GLOBAL_ENV_PREMISES_SHA + context.getPremiseSHA() +
-                            Constant.COMMA + Constant.GLOBAL_ENV_CORE_JAR_URL + context.getCoreJarURL() +
-                            Constant.COMMA + Constant.GLOBAL_ENV_M2_ZIP_URL + context.getM2ZipURL() +
-                            Constant.COMMA + Constant.GLOBAL_ENV_APP_DATA_PATH + context.getAppDataPath() +
-                            Constant.COMMA + Constant.GLOBAL_ENV_INSTANCE_ID + context.getInstanceId()
+                            Constant.COMMA + Constant.GLOBAL_NAMESPACE + context.getStageName() + context.getAppName() +
+                            Constant.COMMA + Constant.GLOBAL_ENV_POSTGRES_DB + dbName
+//                            Constant.COMMA + Constant.GLOBAL_ENV_POSTGRES_USER + "" +
+//                            Constant.COMMA + Constant.GLOBAL_ENV_POSTGRES_PASSWORD + "" +
+//                            Constant.COMMA + Constant.GLOBAL_ENV_PGDATA + ""
             ));
 
             // Debug: Uncomment if needed
@@ -195,12 +188,12 @@ public class Installation {
 
     }
 
-    public static AppContext uninstallHostedDB(AppContext context) {
+    public static AppContext uninstallHostedDB(AppContext context, String dbName) {
         try (KubernetesClient client = new KubernetesClientBuilder().build()) {
             List<String> command = List.of(
                     Constant.HELM,
                     Constant.UNINSTALL,
-                    context.getStageName() + context.getAppName() + context.getInstanceId().toLowerCase().trim(),
+                    context.getStageName() + context.getAppName() + dbName,
                     Constant._NAMESPACE + context.getStageName() + context.getAppName()
             );
 
@@ -211,7 +204,7 @@ public class Installation {
 
             if (result.isSuccess()
 
-                    && result.getStdout().contains(String.format("release \"%s\" uninstalled", context.getStageName() + context.getAppName() + context.getInstanceId().toLowerCase().trim()))) {
+                    && result.getStdout().contains(String.format("release \"%s\" uninstalled", context.getStageName() + context.getAppName() + dbName))) {
 
                 return context;
 
@@ -225,7 +218,7 @@ public class Installation {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error uninstalling Hosted Database [" + context.getStageName() + context.getAppName() + context.getInstanceId().toLowerCase().trim() + "]: " + e.getMessage());
+            System.out.println("Error uninstalling Hosted Database [" + context.getStageName() + context.getAppName() + dbName + "]: " + e.getMessage());
             return null;
         }
     }

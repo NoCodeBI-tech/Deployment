@@ -115,7 +115,7 @@
     </dependencies>
 
     <build>
-        <finalName>nocodebi-service</finalName>
+        <finalName>Prod-NoCodeBI-Service</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

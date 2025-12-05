@@ -1,5 +1,5 @@
 {{- range $service := .Values.services }}
-{{- if not (eq $service.name "server-postgres") }}
+{{- if and (not (eq $service.name "server-postgres")) (not (eq $service.name "openfga")) }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:

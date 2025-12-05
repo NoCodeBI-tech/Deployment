@@ -123,7 +123,11 @@ public class CommandController {
 
         ResponseTransaction transaction = new ResponseTransaction();
 
-        AppContext context = Utilities.fromJson(request, AppContext.class);
+        System.out.println("request : " + Utilities.toJson(request));
+
+        AppContext context = Utilities.fromJson(request.get("context"), AppContext.class);
+
+        String dbName = request.path("dbName").asText();
 
         System.out.println("buildHostedDB : " + request);
 
@@ -141,7 +145,7 @@ public class CommandController {
 
         } else {
 
-            context = Installation.buildHostedDB(context);
+            context = Installation.buildHostedDB(context, dbName);
 
             if (context != null) {
 
@@ -172,7 +176,9 @@ public class CommandController {
 
         ResponseTransaction transaction = new ResponseTransaction();
 
-        AppContext context = Utilities.fromJson(request, AppContext.class);
+        AppContext context = Utilities.fromJson(request.path("context"), AppContext.class);
+
+        String dbName = request.path("dbName").asText();
 
         Response response;
 
@@ -186,7 +192,7 @@ public class CommandController {
 
         } else {
 
-            context = Installation.uninstallHostedDB(context);
+            context = Installation.uninstallHostedDB(context, dbName);
 
             if (context != null) {
 

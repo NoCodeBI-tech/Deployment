@@ -10,9 +10,9 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   hostPath:
-    path: "/mnt/server_data/{{ $.Values.global.appName }}/database"
+    path: "/mnt/server_data/{{ $.Values.global.app }}/{{ $.Values.global.appName }}/database"
     type: DirectoryOrCreate
   claimRef:
-    namespace: {{ $.Values.global.appName }}
+    namespace: {{ $.Values.global.namespace }}
     name: {{ $.Values.global.appName }}-server-postgres-pvc
 ---
