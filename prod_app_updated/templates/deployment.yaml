@@ -16,27 +16,11 @@ spec:
         redeploy-timestamp: "{{ now | unixEpoch }}"
     spec:
       serviceAccountName: {{ $.Values.global.appName }}-sa
-      {{- if or (eq $service.name "server-postgres") (eq $service.name "openfga") }}
+      {{- if eq $service.name "server-postgres" }}
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
-      {{- end }}
-      {{- if eq $service.name "openfga" }}
-      initContainers:
-        - name: create-openfga-schema
-          image: postgres:15
-          command: ["/bin/sh", "-c"]
-          args:
-            - |
-              PGPASSWORD="NoCodeBI@2025" psql \
-                -h {{ $.Values.global.appName }}-server-postgres-service.{{ $.Values.global.appName }}.svc.cluster.local \
-                -U nocodebi \
-                -d config \
-                -c "CREATE SCHEMA IF NOT EXISTS openfga;"
-          env:
-            - name: PGPASSWORD
-              value: "NoCodeBI@2025"
       {{- end }}
       containers:
         - name: {{ $service.name }}
@@ -59,7 +43,7 @@ spec:
             - name: OPENFGA_DATASTORE_ENGINE
               value: "postgres"
             - name: OPENFGA_DATASTORE_URI
-              value: "postgres://nocodebi:NoCodeBI%402025@{{ $.Values.global.appName }}-server-postgres-service.{{ $.Values.global.appName }}.svc.cluster.local:5432/config?sslmode=disable&search_path=openfga"
+              value: "postgres://nocodebi:NoCodeBI%402025@{{ $.Values.global.appName }}-server-postgres-service.{{ $.Values.global.appName }}.svc.cluster.local:5432/config?sslmode=disable"
             - name: OPENFGA_LOG_LEVEL
               value: "info"
             - name: OPENFGA_AUTHN_METHOD
