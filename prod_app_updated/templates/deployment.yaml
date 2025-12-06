@@ -69,7 +69,7 @@ spec:
             - name: OPENFGA_SERVER_URL
               value: "http://{{ $.Values.global.appName }}-openfga-service.{{ $.Values.global.appName }}.svc.cluster.local:8080"
             - name: OPENFGA_STORE_ID
-              value: {{ $.Values.global.appName }}
+              value: "{{ $.Values.global.appName }}"
           {{- end }}
           ports:
             - name: port
