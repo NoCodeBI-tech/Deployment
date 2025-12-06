@@ -15,6 +15,17 @@ spec:
       annotations:
         redeploy-timestamp: "{{ now | unixEpoch }}"
     spec:
+      {{- if eq $service.name "openfga" }}
+      initContainers:
+        - name: openfga-migrate
+          image: {{ $service.image }}
+          args: ["migrate"]
+          env:
+            - name: OPENFGA_DATASTORE_ENGINE
+              value: "postgres"
+            - name: OPENFGA_DATASTORE_URI
+              value: "postgres://nocodebi:NoCodeBI%402025@{{ $.Values.global.appName }}-server-postgres-service.{{ $.Values.global.appName }}.svc.cluster.local:5432/config?sslmode=disable"
+      {{- end }}
       serviceAccountName: {{ $.Values.global.appName }}-sa
       {{- if eq $service.name "server-postgres" }}
       securityContext:
@@ -57,6 +68,8 @@ spec:
               value: "jdbc:postgresql://{{ $.Values.global.appName }}-server-postgres-service.{{ $.Values.global.appName }}.svc.cluster.local:5432/config"
             - name: OPENFGA_SERVER_URL
               value: "http://{{ $.Values.global.appName }}-openfga-service.{{ $.Values.global.appName }}.svc.cluster.local:8080"
+            - name: OPENFGA_STORE_ID
+              value: {{ $.Values.global.appName }}
           {{- end }}
           ports:
             - name: port
